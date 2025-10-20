@@ -35,3 +35,4 @@ export async function requestQGen({ documentId, model, lang = "ko" }) {
   });
   return res.data;                         // { ok: true, count: … }
 }
+
