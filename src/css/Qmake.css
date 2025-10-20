@@ -1,0 +1,359 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Pretendard", sans-serif;
+}
+
+/* ========================== */
+/* 전체 컨테이너 */
+/* ========================== */
+.qmake-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #e8f0ff 0%, #f5f8ff 50%, #dbe8ff 100%);
+  color: #111;
+  box-sizing: border-box;
+}
+
+/* ========================== */
+/* 왼쪽 사이드바 */
+/* ========================== */
+.qmake-sidebar {
+  width: 280px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+
+  /* ✨ 유리 효과 */
+  background: rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(220, 220, 255, 0.3);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.qmake-sidebar-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #1f49a5;
+  margin-bottom: 80px;
+  letter-spacing: 0.5px;
+}
+
+/* 단계 표시 */
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 50px;
+  margin-top: 40px;
+  transform: scale(1.05);
+  transform-origin: top center;
+}
+
+.step-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  text-align: left;
+  gap: 12px;
+}
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.step-label {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.3;
+  width: 120px;
+  text-align: left;
+  margin-top: 2px;
+}
+
+.step-line {
+  position: absolute;
+  left: 13px;
+  top: 28px;
+  width: 2px;
+  height: 85px;
+  background-color: rgba(200, 200, 200, 0.4);
+}
+
+.step-circle.active {
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.step-circle.completed {
+  background-color: #10b981;
+  color: white;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 108, 247, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(74, 108, 247, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 108, 247, 0);
+  }
+}
+
+/* ========================== */
+/* 오른쪽 메인 영역 */
+/* ========================== */
+.qmake-main {
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 100px;
+  padding-top: 80px;
+  box-sizing: border-box;
+  color: #0c1c3f;
+}
+
+/* 제목 */
+.qmake-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0c1c3f;
+  margin-bottom: 8px;
+}
+
+.qmake-subtitle {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* ========================== */
+/* 질문 박스 (유리 효과) */
+/* ========================== */
+.qmake-q-box {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(230, 230, 255, 0.5);
+  border-radius: 16px;
+  width: 900px;
+  min-height: 340px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  margin-bottom: 40px;
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
+
+.q-item {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(230, 230, 230, 0.6);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.q-number {
+  color: #4a6cf7;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.q-text {
+  flex: 1;
+  word-break: keep-all;
+}
+
+/* ========================== */
+/* 버튼 */
+/* ========================== */
+.q-btns {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  margin: 40px auto;
+}
+
+.qmake-btn {
+  background: white;
+  color: #111;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 8px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.qmake-btn:hover {
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  color: white;
+  border: 1px solid transparent;
+}
+
+/* ========================== */
+/* 카드 영역 */
+/* ========================== */
+.qmake-card-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  margin-top: 40px;
+  margin-bottom: 100px;
+}
+
+.qmake-card {
+  width: 280px;
+  height: 170px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  border: 1px solid rgba(230, 230, 255, 0.5);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  transition: 0.3s ease;
+}
+
+.qmake-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.1);
+}
+
+.qmake-card h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #0c1c3f;
+}
+
+.qmake-card p {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.run-btn {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.run-btn:hover {
+  background: linear-gradient(135deg, #3652d9, #6d8aff);
+}
+
+/* ========================== */
+/* 모달 */
+/* ========================== */
+.qmake-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.qmake-modal-content {
+  background: rgba(255, 255, 255, 0.9);
+  width: 700px;
+  max-height: 80vh;
+  border-radius: 20px;
+  padding: 30px 40px;
+  overflow-y: auto;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.qmake-modal-questions {
+  margin-top: 16px;
+}
+
+.modal-q-item {
+  background-color: rgba(250, 250, 255, 0.9);
+  border: 1px solid rgba(226, 228, 234, 0.6);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.qmake-modal-close {
+  margin-top: 20px;
+  float: right;
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.qmake-modal-close:hover {
+  background: linear-gradient(135deg, #3652d9, #6d8aff);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

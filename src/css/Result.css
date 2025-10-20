@@ -1,0 +1,214 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Pretendard", sans-serif;
+  overflow: hidden;
+}
+
+/* ========================== */
+/* 전체 레이아웃 */
+/* ========================== */
+.result-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  color: #111;
+  background: linear-gradient(135deg, #e8f0ff 0%, #f5f8ff 50%, #dbe8ff 100%);
+  box-sizing: border-box;
+}
+
+/* ========================== */
+/* 사이드바 (유리 효과) */
+/* ========================== */
+.result-sidebar {
+  width: 280px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+
+  background: rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(220, 220, 255, 0.3);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.result-sidebar-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #1f49a5;
+  margin-bottom: 80px;
+  letter-spacing: 0.5px;
+}
+
+/* 단계 표시 */
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 50px;
+  transform: scale(1.05);
+  transform-origin: top center;
+}
+
+.step-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  text-align: left;
+  gap: 12px;
+}
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.step-label {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.3;
+  width: 120px;
+  text-align: left;
+  margin-top: 2px;
+}
+
+.step-line {
+  position: absolute;
+  left: 13px;
+  top: 28px;
+  width: 2px;
+  height: 85px;
+  background-color: rgba(200, 200, 200, 0.4);
+}
+
+.step-circle.active {
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.step-circle.completed {
+  background-color: #10b981;
+  color: white;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 108, 247, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(74, 108, 247, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 108, 247, 0);
+  }
+}
+
+/* ========================== */
+/* 오른쪽 본문 영역 */
+/* ========================== */
+.result-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 100px;
+  padding-top: 80px;
+  box-sizing: border-box;
+  color: #0c1c3f;
+}
+
+.result-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0c1c3f;
+  margin-bottom: 10px;
+}
+
+.result-subtitle {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* ========================== */
+/* 결과 카드 섹션 */
+/* ========================== */
+.result-card-wrapper {
+  display: flex;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+/* ✨ 유리 효과 카드 */
+.result-mini-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(230, 230, 255, 0.5);
+  border-radius: 16px;
+  width: 260px;
+  height: 140px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 28px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.3s ease;
+  text-align: center;
+}
+
+.result-mini-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.result-mini-card h2 {
+  font-size: 15px;
+  color: #1f49a5;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.mini-score {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2f9e44;
+  font-style: italic;
+  text-shadow: 0 2px 8px rgba(47, 158, 68, 0.3);
+}
+
+/* ========================== */
+/* 추가적인 애니메이션 효과 */
+/* ========================== */
+@keyframes fadeInScore {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mini-score {
+  animation: fadeInScore 1s ease-in-out;
+}
