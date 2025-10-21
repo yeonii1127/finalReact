@@ -1,21 +1,20 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../css/Qmake.css";
 import React from "react";
-import { fetchQuestionsByDoc } from "../js/documentApi";
+import { fetchFlatQuestionsByDoc } from "../js/documentApi";
 import axios from "axios";
 
 export default function Qmake() {
   const navigate = useNavigate();
 
-  // 상태값
   const [documentId, setDocumentId] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  // 로그인 세션 기반 문서 ID 불러오기
+  // ✅ 문서 ID 가져오기
   useEffect(() => {
     const fetchLatestDoc = async () => {
       try {
@@ -31,13 +30,13 @@ export default function Qmake() {
     fetchLatestDoc();
   }, []);
 
-  // 질문 불러오기
+  // ✅ 질문 목록 불러오기
   const loadQuestions = async () => {
     if (!documentId) return;
     setLoading(true);
     setError("");
     try {
-      const list = await fetchQuestionsByDoc(documentId);
+      const list = await fetchFlatQuestionsByDoc(documentId);
       setQuestions(Array.isArray(list) ? list : []);
     } catch (e) {
       setError(e?.response?.data || e?.message || "질문 조회 실패");
@@ -48,24 +47,13 @@ export default function Qmake() {
 
   useEffect(() => {
     if (documentId) loadQuestions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentId]);
 
-  // 질문 다운로드
-  const handleDownload = () => {
-    const lines = questions.map((q) => q.questionText ?? String(q ?? ""));
-    const blob = new Blob([lines.join("\n")], { type: "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `generated_questions_doc_${documentId ?? "unknown"}.txt`;
-    link.click();
-  };
+  // ✅ 질문 다운로드
   const handleServerDownload = () => {
     if (!documentId) return;
-    // 프록시(/api → 8080) 덕분에 같은 오리진처럼 동작 → 세션 쿠키 자동 포함
     const url = `/api/documents/download?documentId=${documentId}`;
-    // 새 탭/다운로드 트리거
-    window.open(url, "_self"); // 새 탭 원하면 "_blank"
+    window.open(url, "_self");
   };
 
   return (
@@ -105,57 +93,64 @@ export default function Qmake() {
           업로드된 파일을 기반으로 생성된 질문을 확인하세요.
         </p>
 
-        {documentId && (
-          <p style={{ marginBottom: 8 }}>
-            문서 ID: <b>{documentId}</b>
-          </p>
-        )}
-        {loading && <p>불러오는 중...</p>}
-        {error && <p style={{ color: "crimson" }}>{error}</p>}
+        {/* ✅ 문서 ID + 버튼 한 줄 정렬 */}
+        <div className="qmake-top-bar">
+          <div className="qmake-doc-id">
+            {documentId ? (
+              <>
+                문서 ID: <b>{documentId}</b>
+              </>
+            ) : error ? (
+              <span style={{ color: "crimson" }}>{error}</span>
+            ) : (
+              <span>문서 ID 불러오는 중...</span>
+            )}
+          </div>
 
+          <div className="q-btns-inline">
+            <button
+              className="qmake-btn"
+              onClick={() => setShowModal(true)}
+              disabled={questions.length === 0}
+            >
+              전체보기
+            </button>
+            <button
+              className="qmake-btn"
+              onClick={handleServerDownload}
+              disabled={!documentId}
+            >
+              질문 다운로드
+            </button>
+          </div>
+        </div>
+
+        {/* 질문 박스 */}
         <div className="qmake-q-box">
-          {!loading && !error && questions.length > 0
-            ? questions.slice(0, 5).map((q, i) => (
-                <div key={q.questionId ?? i} className="q-item">
-                  <span className="q-number">Q{i + 1}.</span>
-                  <span className="q-text">
-                    {q.questionText ?? String(q ?? "")}
-                  </span>
-                </div>
-              ))
-            : !loading && !error && <p>질문 데이터가 없습니다.</p>}
+          {!loading && !error && questions.length > 0 ? (
+            questions.slice(0, 5).map((text, i) => (
+              <div key={i} className="q-item">
+                <span className="q-number">Q{i + 1}.</span>
+                <span className="q-text">{text}</span>
+              </div>
+            ))
+          ) : (
+            !loading &&
+            !error && <p>질문 데이터가 없습니다.</p>
+          )}
         </div>
 
-        <div className="q-btns">
-          <button
-            className="qmake-btn"
-            onClick={() => setShowModal(true)}
-            disabled={questions.length === 0}
-          >
-            전체보기
-          </button>
-          {/* 살짝 바뀜 button */}
-          <button
-            className="qmake-btn"
-            onClick={handleServerDownload}
-            disabled={!documentId}
-          >
-            질문 다운로드
-          </button>
-        </div>
-
+        {/* 카드 영역 */}
         <div className="qmake-card-wrapper">
           <div className="qmake-card">
             <h3>직접 답변 입력하기</h3>
-            <p>
-              생성된 Q를 다운로드하여 직접 모델을 돌린 후 제출할 수 있습니다.
-            </p>
+            <p>생성된 Q를 다운로드하여 직접 모델을 돌린 후 제출할 수 있습니다.</p>
             <button
               className="run-btn"
               onClick={() =>
                 navigate("/users/answerUpload", {
                   state: {
-                    documentId, // 있으면 함께 전달
+                    documentId,
                     placeholder: (questions || [])
                       .map(
                         (q, i) =>
@@ -172,9 +167,7 @@ export default function Qmake() {
 
           <div className="qmake-card">
             <h3>내 모델 등록하기</h3>
-            <p>
-              사용자 모델을 등록하면 자동으로 답변이 생성되고 평가가 진행됩니다.
-            </p>
+            <p>사용자 모델을 등록하면 자동으로 답변이 생성되고 평가가 진행됩니다.</p>
             <button
               className="run-btn"
               onClick={() => navigate("/users/modelUpload")}
@@ -184,6 +177,7 @@ export default function Qmake() {
           </div>
         </div>
 
+        {/* 전체보기 모달 */}
         {showModal && (
           <div
             className="qmake-modal-overlay"

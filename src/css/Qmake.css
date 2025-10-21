@@ -30,12 +30,9 @@ body {
   height: 100vh;
   position: sticky;
   top: 0;
-
-  /* ✨ 유리 효과 */
   background: rgba(255, 255, 255, 0.4);
   border-right: 1px solid rgba(220, 220, 255, 0.3);
   backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
@@ -54,16 +51,12 @@ body {
   align-items: flex-start;
   gap: 50px;
   margin-top: 40px;
-  transform: scale(1.05);
-  transform-origin: top center;
 }
 
 .step-item {
   position: relative;
   display: flex;
   align-items: flex-start;
-  flex-direction: row;
-  text-align: left;
   gap: 12px;
 }
 
@@ -78,13 +71,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.3s;
 }
 
 .step-label {
   font-size: 13px;
   color: #333;
-  line-height: 1.3;
   width: 120px;
   text-align: left;
   margin-top: 2px;
@@ -102,24 +93,11 @@ body {
 .step-circle.active {
   background: linear-gradient(135deg, #4a6cf7, #7d9aff);
   color: white;
-  animation: pulse 1.5s infinite;
 }
 
 .step-circle.completed {
   background-color: #10b981;
   color: white;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(74, 108, 247, 0.6);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(74, 108, 247, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(74, 108, 247, 0);
-  }
 }
 
 /* ========================== */
@@ -130,7 +108,6 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-start;
   padding-left: 100px;
   padding-top: 80px;
@@ -149,32 +126,76 @@ body {
 .qmake-subtitle {
   font-size: 15px;
   color: #555;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+}
+
+/* 문서 ID + 버튼 한 줄 정렬 */
+.qmake-top-bar {
+  width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.qmake-doc-id {
+  font-size: 15px;
+  color: #0c1c3f;
+}
+
+/* 버튼 인라인 */
+.q-btns-inline {
+  display: flex;
+  gap: 14px;
+}
+
+.qmake-btn {
+  background: white;
+  color: #111;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 8px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.qmake-btn:hover {
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  color: white;
+  border: 1px solid transparent;
 }
 
 /* ========================== */
-/* 질문 박스 (유리 효과) */
+/* 질문 박스 */
 /* ========================== */
 .qmake-q-box {
+  position: relative; /* ✅ 버튼 위치 조정용 기준 */
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(230, 230, 255, 0.5);
   border-radius: 16px;
-  width: 900px;
+  width: 1400px;
   min-height: 340px;
-  box-sizing: border-box;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  margin-bottom: 40px;
   padding: 30px 40px;
   display: flex;
   flex-direction: column;
   row-gap: 12px;
 }
 
+.qmake-q-box .q-btns-inline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform:translateY(-120%)
+  display: flex;
+  gap: 10px;
+}
+
 .q-item {
   background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(230, 230, 230, 0.6);
   border-radius: 10px;
   padding: 12px 16px;
   display: flex;
@@ -196,52 +217,21 @@ body {
 }
 
 /* ========================== */
-/* 버튼 */
-/* ========================== */
-.q-btns {
-  display: flex;
-  justify-content: center;
-  gap: 36px;
-  margin: 40px auto;
-}
-
-.qmake-btn {
-  background: white;
-  color: #111;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 8px 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.qmake-btn:hover {
-  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
-  color: white;
-  border: 1px solid transparent;
-}
-
-/* ========================== */
 /* 카드 영역 */
 /* ========================== */
 .qmake-card-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* ✅ 좌우 끝까지 꽉 차게 */
   align-items: center;
-  gap: 60px;
+  width: 1400px; /* ✅ 질문 박스와 동일한 너비로 고정 */
   margin-top: 40px;
-  margin-bottom: 100px;
 }
 
 .qmake-card {
-  width: 280px;
+  flex: 1; /* ✅ 두 카드가 같은 비율로 채우도록 */
   height: 170px;
   background: rgba(255, 255, 255, 0.6);
   border-radius: 20px;
-  border: 1px solid rgba(230, 230, 255, 0.5);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   padding: 28px 24px;
   display: flex;
@@ -249,25 +239,19 @@ body {
   justify-content: space-between;
   text-align: left;
   transition: 0.3s ease;
+  margin: 0 20px; /* ✅ 카드 사이 간격 */
 }
 
+.qmake-card:first-child{
+  margin-left:0;
+}
+
+.qmake-card:last-child{
+  margin-right:0;
+}
 .qmake-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.1);
-}
-
-.qmake-card h3 {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: #0c1c3f;
-}
-
-.qmake-card p {
-  font-size: 13px;
-  color: #555;
-  line-height: 1.4;
-  margin-bottom: 14px;
 }
 
 .run-btn {
@@ -311,49 +295,4 @@ body {
   padding: 30px 40px;
   overflow-y: auto;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-.qmake-modal-questions {
-  margin-top: 16px;
-}
-
-.modal-q-item {
-  background-color: rgba(250, 250, 255, 0.9);
-  border: 1px solid rgba(226, 228, 234, 0.6);
-  border-radius: 10px;
-  padding: 10px 16px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.qmake-modal-close {
-  margin-top: 20px;
-  float: right;
-  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.qmake-modal-close:hover {
-  background: linear-gradient(135deg, #3652d9, #6d8aff);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

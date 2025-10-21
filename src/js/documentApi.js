@@ -36,3 +36,11 @@ export async function requestQGen({ documentId, model, lang = "ko" }) {
   return res.data;                         // { ok: true, count: … }
 }
 
+// 질문 JSON을 평탄화해서 불러오는 API
+export async function fetchFlatQuestionsByDoc(documentId) {
+  const res = await axios.get(`/api/questions/flat`, {
+    params: { documentId },
+    withCredentials: true,
+  });
+  return res.data; // ["질문1","질문2","질문3",...]
+}
