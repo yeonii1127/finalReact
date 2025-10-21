@@ -189,7 +189,7 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  transform:translateY(-120%)
+  transform:translateY(-120%);
   display: flex;
   gap: 10px;
 }
