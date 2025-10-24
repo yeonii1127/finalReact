@@ -1,0 +1,200 @@
+/* ====== HISTORY RESULT 메인 ====== */
+.history-container {
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 30px 30px 30px;
+}
+
+.history-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ====== 날짜 선택 영역 ====== */
+.history-date-select {
+  display: flex;
+  justify-content: flex-end;
+  width: 95%;
+  margin-bottom: 30px;
+  
+}
+
+.history-date-select select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d0d4e4;
+  font-size: 14px;
+  background-color: white;
+  color: #132d64;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
+
+.history-date-select select:hover {
+  border-color: #7b9fff;
+  box-shadow: 0 2px 6px rgba(123, 159, 255, 0.2);
+}
+
+/* ====== 상단: 점수 + 테이블 ====== */
+.history-upper-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  width: 95%; 
+  padding: 25px 30px;
+  border-radius: 14px;
+  flex-wrap: wrap;
+}
+
+/* 왼쪽: 점수 카드 + 피드백 */
+.history-left-box {
+  flex: 1.1;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.history-card-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.history-mini-card {
+  flex: 1;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.history-mini-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+}
+
+.history-mini-card h2 {
+  font-size: 15px;
+  color: #132d64;
+  margin-bottom: 10px;
+}
+
+.history-mini-score {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.rnew-score-high {
+  color: #2f9e44;
+}
+
+.rnew-score-mid {
+  color: #f1a208;
+}
+
+.rnew-score-low {
+  color: #e03131;
+}
+
+.history-feedback {
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 오른쪽: 테이블 */
+.history-right-box {
+  flex: 1.2;
+  min-width: 400px;
+}
+
+.history-table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.history-table th {
+  background-color: #f0f4ff;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+  color: #132d64;
+  font-weight: 600;
+}
+
+.history-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+/* ====== 하단 그래프 영역 ====== */
+.history-graph-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+  margin-top: 35px;
+  width: 95%;
+  flex-wrap: wrap;
+  padding: 25px;
+  border-radius: 14px;
+}
+
+.history-graph-box {
+  background: white;
+  padding: 20px 15px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  width: 320px;
+  transition: all 0.25s ease;
+}
+
+.history-graph-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.history-graph-box h3 {
+  color: #132d64;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* 반응형 */
+@media (max-width: 900px) {
+  .history-upper-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .history-graph-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .history-date-select {
+    justify-content: center;
+  }
+}

@@ -18,6 +18,7 @@ import Aidic from "./Evaluation/Aidic.jsx";
 import Docupload from "./Evaluation2/Docupload.jsx";
 import Domain2 from "./Evaluation2/Domain2.jsx";
 import UserResult2 from "./Evaluation2/Result2.jsx";
+import Mypage from "./Evaluation/Mypage.jsx";
 import React from 'react';
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/auth/signup" element={<Signup />} />
         <Route path='/auth/main' element={<MainPage/>}/>
         <Route path='/auth/aidic' element={<Aidic />}/>
+        
         {/* 필요 시 회원가입 등도 여기서 공개로 라우팅
             <Route path="/auth/signup" element={<Signup />} /> */}
 
@@ -41,8 +43,9 @@ export default function App() {
           <Route path="modelupload" element={<UserModelUpload />} />
           <Route path="answerupload" element={<UserAnswerUpload />} />
           <Route path="result" element={<UserResult />} />
-          <Route path ="update" element={<UserUpdate />}/>
-          <Route path ="evalstatus" element={<EvalStatus />}/>
+          <Route path="update" element={<UserUpdate />}/>
+          <Route path="evalstatus" element={<EvalStatus />}/>
+          <Route path="mypage" element={<Mypage/>}/> {/* auth로 바꾸기 */}
 
 
 

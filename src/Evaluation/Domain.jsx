@@ -58,10 +58,14 @@ export default function Domain() {
     }
   };
 
+    const handleLogoClick = () => {
+    navigate("/auth/main");
+  };
+
   return (
     <div className="domain-container">
       <aside className="domain-sidebar">
-        <h2 className="domain-sidebar-title">DEEP DATA</h2>
+        <h2 className="domain-sidebar-title" onClick={handleLogoClick} style={{cursor: "pointer"}}>DEEP DATA</h2>
         <div className="step-wrapper">
           {[
             "도메인 설정",

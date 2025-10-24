@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../css/MainPage.css";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/로고.png";
 
 export default function MainPage() {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // ✅ 로그인 상태 확인
+  useEffect(() => {
+    const loginStatus = sessionStorage.getItem("isLoggedIn");
+    setIsLoggedIn(loginStatus === "true");
+  }, []);
+
+  // ✅ 로그아웃 함수 (선택사항)
+  const handleLogout = () => {
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("userName");
+    alert("로그아웃 되었습니다.");
+    setIsLoggedIn(false);
+    navigate("/auth/main");
+  };
 
   return (
     <div className="main-container">
@@ -18,6 +34,7 @@ export default function MainPage() {
             onClick={() => navigate("/auth/main")}
           />
         </div>
+
         <nav className="nav-menu">
           <ul>
             <li>서비스 이용</li>
@@ -25,7 +42,16 @@ export default function MainPage() {
             <li onClick={() => navigate("/users/domain")}>데이터 평가</li>
             <li>포트폴리오</li>
             <li onClick={() => navigate("/auth/aidic")}>커뮤니티</li>
-            <li onClick={() => navigate("/auth/login")}>로그인 / 회원가입</li>
+
+            {/* ✅ 로그인 여부에 따라 분기 */}
+            {isLoggedIn ? (
+              <>
+                <li onClick={() => navigate("/users/mypage")}>마이페이지</li>
+                <li onClick={handleLogout}>로그아웃</li>
+              </>
+            ) : (
+              <li onClick={() => navigate("/auth/login")}>로그인 / 회원가입</li>
+            )}
           </ul>
         </nav>
       </header>
