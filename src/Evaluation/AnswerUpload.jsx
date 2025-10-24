@@ -2,7 +2,7 @@ import "../css/AnswerUpload.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import http from "../js/http";
 
 export default function AnswerUpload() {
   const navigate = useNavigate();
@@ -84,38 +84,42 @@ export default function AnswerUpload() {
   // ---------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 선택한 문서 ID 최종 확정 (이전 페이지 state 값이 있으면 fallback)
+  
     const finalDocumentId = Number(selectedDocument || documentId);
-    if (!finalDocumentId) {
-      alert("문서를 먼저 선택해주세요.");
-      return;
-    }
-    if (!answerText.trim()) {
-      alert("답변 텍스트를 입력해주세요.");
-      return;
-    }
-    if (!evalModel) {
-      alert("평가용 모델을 선택해주세요.");
-      return;
-    }
-
+    if (!finalDocumentId) { alert("문서를 먼저 선택해주세요."); return; }
+    if (!answerText.trim()) { alert("답변 텍스트를 입력해주세요."); return; }
+    if (!evalModel) { alert("평가용 모델을 선택해주세요."); return; }
+  
+    // 1) ✅ 스프링에 엔서 저장 (documentId 기반)
+    let answerId = null;
     try {
-      const response = await axios.post(
+      const { data } = await http.post("/answers", {
+        documentId: finalDocumentId,
+        answerText,
+      });
+      answerId = data?.answerId ?? null;
+    } catch (e) {
+      console.error("스프링 저장 실패:", e);
+      alert("엔서를 저장하지 못했습니다.");
+      return;
+    }
+    if (!answerId) {
+      alert("answerId를 받지 못했습니다.");
+      return;
+    }
+  
+    // 2) ✅ FastAPI에 평가 트리거 (documentId + answerId + 모델)
+    try {
+      const { data } = await axios.post(
         "http://127.0.0.1:8095/submit-answer",
-        {
-          documentId: finalDocumentId,   // ✅ 선택한 문서 사용
-          answerText,
-          evalModel,
-        },
+        { documentId: finalDocumentId, answerId, model: evalModel },
         { headers: { "Content-Type": "application/json" } }
       );
-
-      if (response.data?.success || response.data?.ok) {
-        alert(response.data.message || "평가 요청이 접수되었습니다.");
+      if (data?.success || data?.ok) {
+        alert(data.message || "평가 요청이 접수되었습니다.");
         navigate("/users/result");
       } else {
-        alert(response.data?.message || "평가 중 오류가 발생했습니다.");
+        alert(data?.message || "평가 중 오류가 발생했습니다.");
       }
     } catch (err) {
       console.error("평가 요청 실패:", err);

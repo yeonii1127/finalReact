@@ -15,13 +15,16 @@ import UserUpdate from "./Evaluation/Update.jsx";
 import EvalStatus from "./Evaluation/EvalStatus.jsx";
 import MainPage from "./Evaluation/MainPage.jsx";
 import Aidic from "./Evaluation/Aidic.jsx";
+import Docupload from "./Evaluation2/Docupload.jsx";
+import Domain2 from "./Evaluation2/Domain2.jsx";
+import UserResult2 from "./Evaluation2/Result2.jsx";
 import React from 'react';
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         {/* 공개 페이지(로그인 없이 접근 가능) */}
-        <Route path="/" element={<NonMain />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
         <Route path='/auth/main' element={<MainPage/>}/>
@@ -41,7 +44,12 @@ export default function App() {
           <Route path ="update" element={<UserUpdate />}/>
           <Route path ="evalstatus" element={<EvalStatus />}/>
 
-          {/* 계속 추가: 
+
+
+          <Route path ="dupload" element={<Docupload/>}/>
+          <Route path="domain2" element={<Domain2/>}/>
+          <Route path="result2" element={<UserResult2/>}/>
+          {/* 계속 추가:  
               <Route path="upload" element={<FileUpload />} />
               <Route path="result" element={<Result />} />
           */}

@@ -1,4 +1,4 @@
-import "../css/Result.css";
+import "../css_2/Result2.css";
 import { useEffect, useState } from "react";
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";

@@ -1,0 +1,352 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: "Pretendard", sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.docs-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e8f0ff 0%, #f5f8ff 50%, #dbe8ff 100%);
+}
+
+/* ========================== */
+/* 사이드바 */
+/* ========================== */
+.docs-sidebar {
+  width: 280px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(220, 220, 255, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.docs-sidebar-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #1f49a5;
+  margin-bottom: 80px;
+}
+
+/* ========================== */
+/* 메인 */
+/* ========================== */
+.docs-main {
+  flex: 1;
+  padding: 80px 100px;
+}
+
+.docs-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.docs-subtitle {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* ========================== */
+/* 업로드 박스 */
+/* ========================== */
+.upload-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.85);
+  width: 960px;
+  padding: 60px 70px;
+  border-radius: 22px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(14px);
+  gap: 50px;
+  margin-bottom: 80px;
+  box-sizing: border-box;
+  min-height: 500px;
+}
+
+/* 왼쪽 - 업로드 */
+.upload-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid rgba(200, 200, 255, 0.3);
+  padding-right: 50px;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* 오른쪽 - 모델 선택 */
+.upload-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  gap: 10px;
+  box-sizing: border-box;
+  transform: translateY(55px);
+}
+
+.file-model-box {
+  width: 100%;
+}
+
+.file-model-box p {
+  font-weight: 600;
+  color: #1f49a5;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.file-model-box select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.file-model-box select:focus {
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.15);
+}
+
+/* 버튼 */
+.btn-box.inside {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+/* 반응형 */
+@media (max-width: 1100px) {
+  .upload-box {
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 30px;
+    width: 90%;
+  }
+
+  .upload-left {
+    border-right: none;
+    border-bottom: 1px solid rgba(200, 200, 255, 0.3);
+    padding-bottom: 30px;
+  }
+
+  .upload-right {
+    width: 100%;
+    align-items: center;
+  }
+
+  .btn-box.inside {
+    justify-content: center;
+  }
+}
+
+/* ========================== */
+/* 버튼 스타일 */
+/* ========================== */
+.qmake-btn,
+.file-next-btn {
+  width: 120px;
+  height: 44px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 업로드 버튼 */
+.file-next-btn {
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  border: 1.5px solid transparent;
+  color: white;
+}
+
+.file-next-btn:hover {
+  background: linear-gradient(135deg, #3652d9, #6d8aff);
+}
+
+/* ========================== */
+/* ✅ 로딩 전체화면 (사이드바 X) */
+/* ========================== */
+.loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.loading-fullscreen .loading-spinner {
+  border: 6px solid #e0e7ff;
+  border-top: 6px solid #4a6cf7;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+.loading-fullscreen p {
+  color: #1f49a5;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================== */
+/* ✅ 회전목마형 질문 박스 (3D 효과) */
+/* ========================== */
+.question-box {
+  width: 900px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  padding: 40px 50px;
+  margin: 100px auto;
+  text-align: left;
+  transform-style: preserve-3d;
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+/* ========================== */
+/* 🎠 회전목마 효과 */
+/* ========================== */
+.carousel-motion {
+  width: 900px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  margin: 100px auto;
+  text-align: left;
+  transform-style: preserve-3d;
+  perspective: 2000px;
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+/* 중앙 박스 */
+.carousel-motion.orbit-in {
+  transform: rotateY(0deg) translateZ(0px);
+  opacity: 1;
+}
+
+/* 오른쪽으로 회전하며 뒤로 빠지는 */
+.carousel-motion.orbit-out {
+  transform: rotateY(60deg) translateZ(-400px);
+  opacity: 0;
+}
+
+/* ========================== */
+/* 질문 텍스트 스타일 */
+/* ========================== */
+.question-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f49a5;
+  margin-bottom: 25px;
+}
+
+.question-item {
+  font-size: 16px;
+  color: #111;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 12px 0;
+}
+
+
+.answer-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f49a5;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.answer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width:100%;
+  margin-top:30px;
+}
+
+.answer-card {
+  width: 1000px; /* 👈 크기 줄이기 (기존보다 훨씬 슬림) */
+  background: #f7faff;
+  border-radius: 12px;
+  padding: 18px 22px;
+  border: 1px solid #e3e9ff;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.answer-card:hover {
+  background: #eef3ff;
+  transform: translateY(-2px);
+}
+
+/* ✅ 질문 / 답변 텍스트 */
+.answer-card .question {
+  font-weight: 600;
+  color: #132d64;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.answer-card .answer {
+  color: #333;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+@keyframes fadeUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 900px) {
+  .answer-card {
+    width: 90%;
+  }
+}
