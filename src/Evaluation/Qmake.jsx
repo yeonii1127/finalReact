@@ -55,12 +55,15 @@ export default function Qmake() {
     const url = `/api/documents/download?documentId=${documentId}`;
     window.open(url, "_self");
   };
+  const handleLogoClick = () => {
+    navigate("/users/main2");
+  };
 
   return (
     <div className="qmake-container">
       {/* ---- 사이드바 ---- */}
       <aside className="qmake-sidebar">
-        <h2 className="qmake-sidebar-title">DEEP DATA</h2>
+        <h2 className="qmake-sidebar-title" onClick={handleLogoClick} style={{cursor: "pointer"}}>DEEP DATA</h2>
 
         <div className="step-wrapper">
           {[

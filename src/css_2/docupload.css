@@ -37,6 +37,66 @@ html, body {
   margin-bottom: 80px;
 }
 
+.step-wrapper{
+  display:flex;
+  flex-direction:column;
+  align-items: flex-start;
+  gap:50px;
+  transform:scale(1.05);
+  transform-origin:top center;
+}
+
+.step-item{
+  position:relative;
+  display:flex;
+  align-items:flex-start;
+  flex-direction:row;
+  text-align:left;
+  gap:12px;
+}
+
+.step-circle{
+  width: 28px;
+  height:28px;
+  border-radius:50%;
+  background-color:rgba(255,255,255,0.4);
+  color:#666;
+  font-size:14px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content :center;
+  transition : 0.3s;
+}
+
+.step-label{
+  font-size :13px;
+  color:#333;
+  line-height:1.3;
+  width:120px;
+  text-align:left;
+  margin-top:2px;
+}
+
+.step-line{
+  position:absolute;
+  left:13px;
+  top:28px;
+  width:2px;
+  height:85px;
+   background-color: rgba(200,200,200,0.4);
+}
+
+.step-circle.active {
+   background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.step-circle.completed {
+   background-color: #10b981;
+  color: white;
+}
 /* ========================== */
 /* 메인 */
 /* ========================== */
@@ -348,5 +408,25 @@ html, body {
 @media (max-width: 900px) {
   .answer-card {
     width: 90%;
+  }
+}
+
+.step-circle.completed {
+  background: linear-gradient(135deg, #10b981, #34d399); /* 초록색 그라디언트 */
+  color: white;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.3); /* 은은한 그림자만 */
+  /* animation 제거 → 반짝임 없음 */
+}
+
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
   }
 }

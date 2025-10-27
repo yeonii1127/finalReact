@@ -1,174 +1,222 @@
 import "../css_2/docupload.css";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-
-const QGEN_MODELS = [
-  { value: "gpt-4o-mini", label: "GPT-4o-mini" },
-  { value: "gpt-3.5-turbo", label: "GPT-3.5-turbo" },
-  { value: "claude-3-sonnet", label: "Claude 3 Sonnet" },
-];
-
-const EVAL_MODELS = [
-  { value: "gpt-4o", label: "GPT-4o" },
-  { value: "gemini-1.5-pro", label: "Gemini 1.5 Pro" },
-  { value: "claude-3-opus", label: "Claude 3 Opus" },
-];
-
-const USER_MODELS = [
-  { value: "user-model-1", label: "사용자 모델 1" },
-  { value: "user-model-2", label: "사용자 모델 2" },
-  { value: "user-model-3", label: "사용자 모델 3" },
-];
-
-const FAKE_QUESTIONS = [
-  "이 법의 목적은 무엇인가?",
-  "소방청장이 수립해야 하는 계획에는 어떤 항목이 포함되는가?",
-  "누구든지 위급상황에서 어떤 의무를 가지는가?",
-  "국제구조대는 어떤 목적으로 운영되는가?",
-  "구급상황관리센터의 주요 업무는 무엇인가?",
-  "소방청장이 필요하다고 인정할 때 어떤 조치를 할 수 있는가?",
-  "구조란 무엇을 의미하는가?",
-  "응급의료체계는 어떤 원칙으로 운영되는가?",
-  "재난 대응 시 정부의 역할은 무엇인가?",
-];
+import { useNavigate } from "react-router-dom";
+import {
+  fetchGenQModels,
+  fetchEvalModels,
+  fetchUserModels,
+  uploadFile,
+  fetchFlatQuestionsByDoc,
+  fetchFlatAnswersByDoc,
+} from "../js/documentApi";
 
 export default function Docupload() {
+  const navigate = useNavigate();
+  const USER_ID = 41; // TODO: 로그인 연동 시 교체
+
+  // ===== 상태 변수 =====
   const [file, setFile] = useState(null);
-  const [qModel, setQModel] = useState(QGEN_MODELS[0].value);
-  const [eModel, setEModel] = useState(EVAL_MODELS[0].value);
-  const [uModel, setUModel] = useState(USER_MODELS[0].value);
-  const [step, setStep] = useState("upload"); // upload | loading | result | loadingAnswer | customerAnswer
-  const [currentPage, setCurrentPage] = useState(0);
+  const [documentId, setDocumentId] = useState(null);
+
+  const [qModels, setQModels] = useState([]);
+  const [eModels, setEModels] = useState([]);
+  const [uModels, setUModels] = useState([]);
+
+  const [qModel, setQModel] = useState("");
+  const [eModel, setEModel] = useState("");
+  const [uModel, setUModel] = useState("");
+
+  const [step, setStep] = useState("upload"); // upload | loading | Q_GEN_DONE | A_GEN_DONE
   const [flip, setFlip] = useState(true);
 
-  const [answers, setAnswers] = useState([]);
-  const [answerPage, setAnswerPage] = useState(0);
-  const [answerFlip, setAnswerFlip] = useState(true);
+  const [questions, setQuestions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
 
+  const [pairs, setPairs] = useState([]); // [{ q, a }]
+  const [pairPage, setPairPage] = useState(0);
+  const [pairFlip, setPairFlip] = useState(true);
+
+  // ==== 파일 선택 ====
   const handleFileChange = (e) => setFile(e.target.files?.[0] ?? null);
 
-  // ================================
-  // ✅ 업로드 클릭 → 로딩 후 질문 회전 단계로 전환
-  // ================================
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!file) return alert("파일을 선택해주세요!");
-
-    setStep("loading");
-    await new Promise((resolve) => setTimeout(resolve, 2500)); // 2.5초 로딩
-    setStep("result");
+  // ==== 모델 선택 매핑 ====
+  const pickModel = (list, selected) => {
+    const found = list.find((m) => (m.modelKey || m.name) === selected);
+    return found ? { name: found.name, modelId: found.modelId } : null;
   };
 
-  // ================================
-  // ✅ 질문 회전 애니메이션
-  // ================================
+  // ✅ DB에서 모델 목록 로드
   useEffect(() => {
-    if (step !== "result") return;
+    (async () => {
+      try {
+        const [genQ, evals, users] = await Promise.all([
+          fetchGenQModels(),
+          fetchEvalModels(),
+          fetchUserModels(),
+        ]);
+
+        setQModels(genQ || []);
+        setEModels(evals || []);
+        setUModels(users || []);
+
+        if (genQ?.length) setQModel(genQ[0].modelKey || genQ[0].name);
+        if (evals?.length) setEModel(evals[0].modelKey || evals[0].name);
+        if (users?.length) setUModel(users[0].modelKey || users[0].name);
+      } catch (err) {
+        console.error("모델 목록 불러오기 실패:", err);
+        alert("모델 목록을 불러오지 못했습니다.");
+      }
+    })();
+  }, []);
+
+  // ✅ 파일 업로드 + 파이프라인 시작
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!file) return alert("파일을 선택해주세요.");
+    if (!qModel || !eModel || !uModel) return alert("모델을 모두 선택해주세요.");
+
+    try {
+      setStep("loading");
+
+      // (1) 파일 업로드
+      const uploadResp = await uploadFile({ file });
+      const docId = uploadResp?.documentId ?? uploadResp?.data?.documentId;
+      if (!docId) throw new Error("documentId를 응답에서 찾을 수 없습니다.");
+      setDocumentId(docId);
+
+      // (2) 모델 객체 구성
+      const payload = {
+        userId: USER_ID,
+        documentId: docId,
+        userModel: pickModel(uModels, uModel),
+        genQModel: pickModel(qModels, qModel),
+        evalModel: pickModel(eModels, eModel),
+      };
+
+      // (3) FastAPI 호출
+      const resp = await fetch("http://127.0.0.1:8095/start-pipeline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(`파이썬 요청 실패: ${text}`);
+      }
+    } catch (err) {
+      console.error("업로드 오류:", err);
+      alert(`업로드 실패: ${err.message}`);
+      setStep("upload");
+    }
+  };
+
+  // ✅ 폴링: FastAPI 상태 체크
+  useEffect(() => {
+    if (!documentId) return;
+
+    let stopped = false;
+    const poll = async () => {
+      try {
+        const res = await fetch(`http://127.0.0.1:8095/status/${documentId}`);
+        const data = await res.json();
+        const status = data?.status ?? "UNKNOWN";
+        if (stopped) return;
+
+        if (status === "Q_GEN_DONE") {
+          setStep("Q_GEN_DONE");
+          const qList = await fetchFlatQuestionsByDoc(documentId);
+          setQuestions(Array.isArray(qList) ? qList : []);
+        } else if (status === "A_GEN_DONE") {
+          setStep("A_GEN_DONE");
+          const qList = await fetchFlatQuestionsByDoc(documentId);
+          const aList = await fetchFlatAnswersByDoc(documentId);
+
+          const len = Math.min(qList.length, aList.length);
+          const combined = Array.from({ length: len }, (_, i) => ({
+            q: qList[i]?.questionText ?? qList[i],
+            a: aList[i],
+          }));
+          setPairs(combined);
+        } else if (status === "EVAL_DONE") {
+          stopped = true;
+          navigate("/users/result2");
+        } else {
+          setStep("loading");
+        }
+      } catch (e) {
+        console.error("상태 확인 실패:", e);
+      }
+    };
+
+    poll();
+    const id = setInterval(poll, 2000);
+    return () => {
+      stopped = true;
+      clearInterval(id);
+    };
+  }, [documentId, navigate]);
+
+  // ✅ 질문 회전
+  useEffect(() => {
+    if (step !== "Q_GEN_DONE" || !questions.length) return;
     const interval = setInterval(() => {
       setFlip(false);
       setTimeout(() => {
-        setCurrentPage(
-          (prev) => (prev + 1) % Math.ceil(FAKE_QUESTIONS.length / 3)
-        );
+        const pages = Math.ceil(questions.length / 3);
+        setCurrentPage((p) => (p + 1) % pages);
         setFlip(true);
       }, 600);
     }, 4000);
     return () => clearInterval(interval);
-  }, [step]);
+  }, [step, questions]);
 
-  const startIndex = currentPage * 3;
-  const visibleQuestions = FAKE_QUESTIONS.slice(startIndex, startIndex + 3);
-
-  // ================================
-  // ✅ Mock 전환 로직
-  // ================================
+  // ✅ Q/A 회전
   useEffect(() => {
-    if (step !== "result" && step !== "loadingAnswer") return;
-
-    let t1, t2;
-
-    if (step === "result") {
-      t1 = setTimeout(() => setStep("loadingAnswer"), 6000);
-    }
-
-    if (step === "loadingAnswer") {
-      t2 = setTimeout(() => {
-        setAnswers([
-          {
-            question: "이 법의 목적은 무엇인가?",
-            answer: "이 법은 재난 예방과 대응 체계를 강화하기 위한 것입니다.",
-          },
-          {
-            question: "국제구조대는 어떤 목적으로 운영되는가?",
-            answer:
-              "국제구조대는 해외 재난 발생 시 긴급 구조 지원을 수행하기 위해 운영됩니다.",
-          },
-          {
-            question: "응급의료체계는 어떤 원칙으로 운영되는가?",
-            answer: "응급의료체계는 신속성, 전문성, 공공성을 원칙으로 운영됩니다.",
-          },
-          {
-            question: "구조란 무엇을 의미하는가?",
-            answer:
-              "구조란 위급한 상황에 처한 사람을 안전하게 구출하는 활동을 의미합니다.",
-          },
-          {
-            question: "소방청장이 수립해야 하는 계획에는 어떤 항목이 포함되는가?",
-            answer: "재난 예방, 대응, 복구를 위한 종합 계획이 포함됩니다.",
-          },
-          {
-            question: "재난 대응 시 정부의 역할은 무엇인가?",
-            answer: "정부는 긴급 대책본부를 설치하고 피해 복구를 총괄합니다.",
-          },
-        ]);
-        setStep("customerAnswer");
-      }, 3000);
-    }
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, [step]);
-
-  // ================================
-  // ✅ 고객 모델 답변 회전 (3개씩 표시)
-  // ================================
-  useEffect(() => {
-    if (step !== "customerAnswer") return;
-
+    if (step !== "A_GEN_DONE" || !pairs.length) return;
     const interval = setInterval(() => {
-      setAnswerFlip(false);
+      setPairFlip(false);
       setTimeout(() => {
-        setAnswerPage(
-          (prev) => (prev + 1) % Math.ceil(answers.length / 3)
-        );
-        setAnswerFlip(true);
+        const pages = Math.ceil(pairs.length / 3);
+        setPairPage((p) => (p + 1) % pages);
+        setPairFlip(true);
       }, 600);
     }, 4000);
-
     return () => clearInterval(interval);
-  }, [step, answers]);
+  }, [step, pairs]);
 
-  const answerStart = answerPage * 3;
-  const visibleAnswers = answers.slice(answerStart, answerStart + 3);
+  // ==== 3개씩 보여주기 ====
+  const getTriplet = (page, list) => {
+    const idx = page * 3;
+    return list.slice(idx, idx + 3);
+  };
+  const visibleQuestions = getTriplet(currentPage, questions);
+  const visiblePairs = getTriplet(pairPage, pairs);
+
+  // ==== 로고 클릭 ====
+  const handleLogoClick = () => navigate("/users/main2");
 
   return (
     <div className="docs-container">
       {/* -------- 사이드바 -------- */}
       {step !== "loading" && (
         <aside className="docs-sidebar">
-          <h2 className="docs-sidebar-title">DEEP DATA</h2>
+          <h2
+            className="docs-sidebar-title"
+            onClick={handleLogoClick}
+            style={{ cursor: "pointer" }}
+          >
+            DEEP DATA
+          </h2>
           <div className="step-wrapper">
             {["등록", "질문 생성", "답변", "결과"].map((label, index) => (
               <div key={index} className="step-item">
                 <div
                   className={`step-circle ${
                     (step === "upload" && index === 0) ||
-                    (step === "loading" && index === 1) ||
-                    (step === "result" && index === 1) ||
-                    (step === "loadingAnswer" && index === 2) ||
-                    (step === "customerAnswer" && index === 2)
+                    (step === "Q_GEN_DONE" && index === 1) ||
+                    (step === "A_GEN_DONE" && index === 2)
                       ? "active"
                       : ""
                   }`}
@@ -185,20 +233,14 @@ export default function Docupload() {
 
       {/* -------- 메인 -------- */}
       <main className="docs-main">
-        {/* ===================== 업로드 단계 ===================== */}
+        {/* 업로드 */}
         {step === "upload" && (
           <>
             <h1 className="docs-title">문서 등록</h1>
             <p className="docs-subtitle">
               모델 평가 전 문서를 업로드하고 사용할 모델을 선택해주세요.
             </p>
-
-            <form
-              id="uploadForm"
-              onSubmit={handleSubmit}
-              className="upload-box"
-              encType="multipart/form-data"
-            >
+            <form onSubmit={handleSubmit} className="upload-box">
               <div className="upload-left">
                 <p className="upload-text">
                   파일 드래그 & 등록
@@ -224,9 +266,9 @@ export default function Docupload() {
                     value={qModel}
                     onChange={(e) => setQModel(e.target.value)}
                   >
-                    {QGEN_MODELS.map((m) => (
-                      <option key={m.value} value={m.value}>
-                        {m.label}
+                    {qModels.map((m) => (
+                      <option key={m.modelId} value={m.modelKey || m.name}>
+                        {m.name}
                       </option>
                     ))}
                   </select>
@@ -238,9 +280,9 @@ export default function Docupload() {
                     value={eModel}
                     onChange={(e) => setEModel(e.target.value)}
                   >
-                    {EVAL_MODELS.map((m) => (
-                      <option key={m.value} value={m.value}>
-                        {m.label}
+                    {eModels.map((m) => (
+                      <option key={m.modelId} value={m.modelKey || m.name}>
+                        {m.name}
                       </option>
                     ))}
                   </select>
@@ -252,9 +294,9 @@ export default function Docupload() {
                     value={uModel}
                     onChange={(e) => setUModel(e.target.value)}
                   >
-                    {USER_MODELS.map((m) => (
-                      <option key={m.value} value={m.value}>
-                        {m.label}
+                    {uModels.map((m) => (
+                      <option key={m.modelId} value={m.modelKey || m.name}>
+                        {m.name}
                       </option>
                     ))}
                   </select>
@@ -270,7 +312,7 @@ export default function Docupload() {
           </>
         )}
 
-        {/* ===================== 로딩 ===================== */}
+        {/* 로딩 */}
         {step === "loading" && (
           <div className="loading-fullscreen">
             <div className="loading-spinner"></div>
@@ -278,8 +320,8 @@ export default function Docupload() {
           </div>
         )}
 
-        {/* ===================== 질문 회전 ===================== */}
-        {step === "result" && (
+        {/* 질문 회전 */}
+        {step === "Q_GEN_DONE" && (
           <div
             className={`question-box carousel-rotate ${
               flip ? "rotate-in" : "rotate-out"
@@ -289,34 +331,30 @@ export default function Docupload() {
             <ul>
               {visibleQuestions.map((q, i) => (
                 <li key={i} className="question-item">
-                  {q}
+                  {typeof q === "string" ? q : q?.questionText}
                 </li>
               ))}
             </ul>
           </div>
         )}
 
-        {/* ===================== 모델 답변 로딩 ===================== */}
-        {step === "loadingAnswer" && (
-          <div className="loading-fullscreen">
-            <div className="loading-spinner"></div>
-            <p>고객 모델이 답변을 생성 중입니다...</p>
-          </div>
-        )}
-
-        {/* ===================== 고객 모델 답변 회전 ===================== */}
-        {step === "customerAnswer" && (
+        {/* Q/A 회전 */}
+        {step === "A_GEN_DONE" && (
           <section
             className={`customer-answer carousel-rotate ${
-              answerFlip ? "rotate-in" : "rotate-out"
+              pairFlip ? "rotate-in" : "rotate-out"
             }`}
           >
-            <h2 className="answer-title">생성된 고객 모델 답변</h2>
+            <h2 className="answer-title">질문 · 답변 매칭</h2>
             <div className="answer-container">
-              {visibleAnswers.map((ans, i) => (
+              {visiblePairs.map((p, i) => (
                 <div key={i} className="answer-card">
-                  <p className="question">{ans.question}</p>
-                  <p className="answer">{ans.answer}</p>
+                  <p className="question">
+                    <b>Q{i + 1}.</b> {p.q}
+                  </p>
+                  <p className="answer">
+                    <b>A{i + 1}.</b> {p.a}
+                  </p>
                 </div>
               ))}
             </div>

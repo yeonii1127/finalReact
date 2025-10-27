@@ -68,11 +68,15 @@ export default function FileUpload() {
     }
   };
 
+   const handleLogoClick = () => {
+    navigate("/users/main2");
+  };
+
   return (
     <div className="file-container">
       {/* ---- 사이드바 ---- */}
       <aside className="file-sidebar">
-        <h2 className="file-sidebar-title">DEEP DATA</h2>
+        <h2 className="file-sidebar-title" onClick={handleLogoClick} style={{cursor: "pointer"}}>DEEP DATA</h2>
 
         <div className="step-wrapper">
           {[

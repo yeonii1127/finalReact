@@ -2,8 +2,9 @@ import "../css_2/Result2.css";
 import { useEffect, useState } from "react";
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
-
-export default function Result() {
+import { useNavigate } from "react-router-dom";
+export default function Result2() {
+  const navigate = useNavigate();
   function getScoreColor(score) {
     if (score >= 80) return "rnew-score-high";
     if (score >= 60) return "rnew-score-mid";
@@ -68,30 +69,26 @@ export default function Result() {
   const COLORS1 = ["#2f9e44", "#6ecb63", "#9de090", "#c8f0c8"];
   const COLORS2 = ["#e0b100", "#f4ca64", "#ffe699"];
 
+   const handleLogoClick = () => {
+    navigate("/users/main2");
+  };
   return (
     <div className="rnew-container">
       {/* ===== 사이드바 ===== */}
       <aside className="rnew-sidebar">
-        <h2 className="rnew-sidebar-title">DEEP DATA</h2>
+        <h2 className="rnew-sidebar-title"  onClick={handleLogoClick} style={{cursor: "pointer"}}>DEEP DATA</h2>
         <div className="rnew-step-wrapper">
-          {[
-            "도메인 설정",
-            "파일 등록",
-            "질문 생성",
-            "답변 등록 / 모델 등록",
-            "평가 진행 현황",
-            "결과",
-          ].map((label, index) => (
+          {["등록", "질문 생성", "답변", "결과"].map((label, index) => (
             <div key={index} className="rnew-step-item">
               <div
                 className={`rnew-step-circle ${
-                  index === 5 ? "active" : index < 5 ? "completed" : ""
+                  index < 3 ? "completed" : index === 3 ? "active" : ""
                 }`}
               >
                 {index + 1}
               </div>
               <div className="rnew-step-label">{label}</div>
-              {index < 5 && <div className="rnew-step-line"></div>}
+              {index < 3 && <div className="rnew-step-line"></div>}
             </div>
           ))}
         </div>
@@ -102,8 +99,8 @@ export default function Result() {
         <h1 className="rnew-title">평가 결과</h1>
         <p className="rnew-subtitle">모델의 평가 지표 결과입니다.</p>
 
-        {/* ✅ 상단: 왼쪽(카드+피드백) / 오른쪽(표) */}
-        <div className="rnew-upper-section">
+        {/* ✅ 상단 레이아웃 */}
+        <section className="rnew-upper-section">
           {/* 왼쪽 */}
           <div className="rnew-left-box">
             <div className="rnew-card-wrapper">
@@ -154,42 +151,33 @@ export default function Result() {
                     <tr key={i}>
                       <td>{row.question}</td>
                       <td>{row.modelAnswer}</td>
-                      <td className={getScoreColor(row.factuality)}>
-                        {row.factuality}
-                      </td>
-                      <td className={getScoreColor(row.relevance)}>
-                        {row.relevance}
-                      </td>
+                      <td className={getScoreColor(row.factuality)}>{row.factuality}</td>
+                      <td className={getScoreColor(row.relevance)}>{row.relevance}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* ✅ 그래프 섹션 (아래쪽 유지) */}
-        <div className="rnew-graph-section">
+        {/* ✅ 하단 그래프 섹션 */}
+        <section className="rnew-graph-section">
           <div className="rnew-graph-box">
             <h3>사실성 구성요소</h3>
-            <PieChart width={320} height={300}>
+            <PieChart width={280} height={280}>
               <Pie
                 data={factualityBreakdown}
                 dataKey="value"
                 cx="50%"
                 cy="50%"
-                innerRadius={45}
-                outerRadius={70}
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
+                innerRadius={50}
+                outerRadius={80}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 labelLine={false}
               >
                 {factualityBreakdown.map((entry, index) => (
-                  <Cell
-                    key={`f-${index}`}
-                    fill={COLORS1[index % COLORS1.length]}
-                  />
+                  <Cell key={`f-${index}`} fill={COLORS1[index % COLORS1.length]} />
                 ))}
               </Pie>
               <Tooltip />
@@ -198,30 +186,25 @@ export default function Result() {
 
           <div className="rnew-graph-box">
             <h3>관련성 구성요소</h3>
-            <PieChart width={320} height={300}>
+            <PieChart width={280} height={280}>
               <Pie
                 data={relevanceBreakdown}
                 dataKey="value"
                 cx="50%"
                 cy="50%"
-                innerRadius={45}
-                outerRadius={70}
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
+                innerRadius={50}
+                outerRadius={80}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 labelLine={false}
               >
                 {relevanceBreakdown.map((entry, index) => (
-                  <Cell
-                    key={`r-${index}`}
-                    fill={COLORS2[index % COLORS2.length]}
-                  />
+                  <Cell key={`r-${index}`} fill={COLORS2[index % COLORS2.length]} />
                 ))}
               </Pie>
               <Tooltip />
             </PieChart>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );

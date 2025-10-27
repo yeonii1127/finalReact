@@ -59,7 +59,7 @@ export default function Domain() {
   };
 
     const handleLogoClick = () => {
-    navigate("/auth/main");
+    navigate("/users/main2");
   };
 
   return (
@@ -107,8 +107,7 @@ export default function Domain() {
             id="domain_select_value"
           >
             <option value="선택하세요">선택하세요</option>
-            <option value="법률">법률</option>
-            <option value="금융">금융</option>
+            <option value="finance">금융</option>
           </select>
 
           <button type="submit" disabled={loading}>

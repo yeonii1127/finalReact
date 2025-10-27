@@ -1,7 +1,6 @@
 // src/App2.jsx
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import UsersGuard from "./Guard/UsersGuard.jsx";
-import UsersMain from "./Evaluation/UserMain.jsx"; // /users/main
 import UsersDomain from "./Evaluation/Domain.jsx"; // /users/domain
 import Login from "./Evaluation/Login.jsx"; // /auth/login
 import NonMain from "./Nonauth/NonMain.jsx"; // 공개 홈(예시)
@@ -19,6 +18,7 @@ import Docupload from "./Evaluation2/Docupload.jsx";
 import Domain2 from "./Evaluation2/Domain2.jsx";
 import UserResult2 from "./Evaluation2/Result2.jsx";
 import Mypage from "./Evaluation/Mypage.jsx";
+import Mainpage2 from "./Evaluation/Mainpage2.jsx";
 import React from 'react';
 export default function App() {
   return (
@@ -44,6 +44,7 @@ export default function App() {
           <Route path="result" element={<UserResult />} />
           <Route path="update" element={<UserUpdate />}/>
           <Route path="evalstatus" element={<EvalStatus />}/>
+          <Route path="main2" element={<Mainpage2/>}/>
           <Route path="mypage" element={<Mypage/>}/> {/* auth로 바꾸기 */}
 
 

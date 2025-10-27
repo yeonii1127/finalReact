@@ -126,10 +126,14 @@ export default function AnswerUpload() {
       alert("평가 요청 중 오류가 발생했습니다.");
     }
   };
+
+     const handleLogoClick = () => {
+    navigate("/users/main2");
+  };
   return (
     <div className="ans-container">
       <aside className="domain-sidebar">
-        <h2 className="domain-sidebar-title">DEEP DATA</h2>
+        <h2 className="domain-sidebar-title"  onClick={handleLogoClick} style={{cursor: "pointer"}}>DEEP DATA</h2>
         <div className="step-wrapper">
           {[
             "도메인 설정",

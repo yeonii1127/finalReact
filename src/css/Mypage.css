@@ -215,3 +215,173 @@ nav-menu li {
   background: rgba(90, 110, 160, 0.45);
 }
 
+.logout{
+   font-weight: 600;
+  color: #223358;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-top:330px;
+}
+
+/* ===== 비밀번호 확인 섹션 ===== */
+.pw-check-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  border-radius: 16px;
+  padding: 40px 50px;
+  width: 100%;
+  max-width: 480px;
+  margin: 60px auto;
+  backdrop-filter: blur(10px);
+}
+
+.pw-check-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2a5f;
+  margin-bottom: 10px;
+}
+
+.pw-check-desc {
+  font-size: 14px;
+  color: #4a5578;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.pw-check-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== 비밀번호 입력창 디자인 개선 ===== */
+.pw-input {
+  width: 280px;
+  height: 44px;
+  border: 1px solid rgba(120, 140, 200, 0.3);
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 15px;
+  color: #1f2a5f;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 6px rgba(100, 120, 180, 0.1);
+  transition: all 0.25s ease-in-out;
+}
+
+.pw-input:focus {
+  outline: none;
+  border: 1.5px solid #597dff;
+  box-shadow: 0 0 10px rgba(89, 125, 255, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* placeholder 색 */
+.pw-input::placeholder {
+  color: rgba(50, 70, 120, 0.5);
+  font-size: 14px;
+}
+
+/* hover 시 약간의 반응 */
+.pw-input:hover {
+  box-shadow: 0 3px 8px rgba(89, 125, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.pw-error {
+  color: #d9534f;
+  font-size: 14px; 
+  margin-bottom: 10px;
+}
+
+.pw-submit-btn {
+  background-color: #597dff;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  margin-top:25px;
+}
+
+.pw-submit-btn:hover {
+  background-color: #4768e8;
+  box-shadow: 0 4px 12px rgba(89, 125, 255, 0.3);
+}
+
+/* ===== 비밀번호 변경 폼 중앙 정렬 ===== */
+.pw-change-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  margin: 60px auto;
+  padding: 50px 40px;
+}
+.pwCh{
+  margin-bottom: 20px;
+}
+
+.pw-change-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2a5f;
+  margin-bottom: 25px;
+}
+
+.pw-change {
+  width: 280px;
+  height: 44px;
+  border: 1px solid rgba(120, 140, 200, 0.3);
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 15px;
+  color: #1f2a5f;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 6px rgba(100, 120, 180, 0.1);
+  transition: all 0.25s ease-in-out;
+  margin-bottom: 16px;
+}
+
+.pw-change:focus {
+  outline: none;
+  border: 1.5px solid #597dff;
+  box-shadow: 0 0 10px rgba(89, 125, 255, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.pw-change::placeholder {
+  color: rgba(50, 70, 120, 0.5);
+  font-size: 14px;
+}
+
+.pw-change:hover {
+  box-shadow: 0 3px 8px rgba(89, 125, 255, 0.15);
+  transform: translateY(-1px);
+}
+.changeButton{
+    background-color: #597dff;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  margin-top:20px;
+}

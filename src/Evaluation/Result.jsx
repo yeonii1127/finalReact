@@ -2,8 +2,10 @@ import "../css/Result.css";
 import { useEffect, useState } from "react";
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 export default function Result() {
+  const navigate = useNavigate();
   function getScoreColor(score) {
     if (score >= 80) return "rnew-score-high";
     if (score >= 60) return "rnew-score-mid";
@@ -68,11 +70,21 @@ export default function Result() {
   const COLORS1 = ["#2f9e44", "#6ecb63", "#9de090", "#c8f0c8"];
   const COLORS2 = ["#e0b100", "#f4ca64", "#ffe699"];
 
+    const handleLogoClick = () => {
+    navigate("/users/main2");
+  };
+
   return (
     <div className="rnew-container">
       {/* ===== 사이드바 ===== */}
       <aside className="rnew-sidebar">
-        <h2 className="rnew-sidebar-title">DEEP DATA</h2>
+        <h2
+          className="rnew-sidebar-title"
+          onClick={handleLogoClick}
+          style={{ cursor: "pointer" }}
+        >
+          DEEP DATA
+        </h2>
         <div className="rnew-step-wrapper">
           {[
             "도메인 설정",
@@ -109,7 +121,11 @@ export default function Result() {
             <div className="rnew-card-wrapper">
               <div className="rnew-mini-card">
                 <h2>사실성 (Factuality)</h2>
-                <p className={`rnew-mini-score ${getScoreColor(result.factuality)}`}>
+                <p
+                  className={`rnew-mini-score ${getScoreColor(
+                    result.factuality
+                  )}`}
+                >
                   {Math.floor(result.factuality)}
                   <span className="rnew-decimal">
                     .{String(result.factuality.toFixed(1)).split(".")[1]}
@@ -119,7 +135,11 @@ export default function Result() {
 
               <div className="rnew-mini-card">
                 <h2>관련성 (Relevance)</h2>
-                <p className={`rnew-mini-score ${getScoreColor(result.relevance)}`}>
+                <p
+                  className={`rnew-mini-score ${getScoreColor(
+                    result.relevance
+                  )}`}
+                >
                   {Math.floor(result.relevance)}
                   <span className="rnew-decimal">
                     .{String(result.relevance.toFixed(1)).split(".")[1]}
@@ -131,8 +151,8 @@ export default function Result() {
             <div className="rnew-feedback">
               <h3>종합 피드백</h3>
               <p>
-                이 모델은 대부분의 질문에 대해 사실적인 답변을 제공했지만,
-                일부 정의적 질문에서는 정확도가 낮게 나타났습니다.
+                이 모델은 대부분의 질문에 대해 사실적인 답변을 제공했지만, 일부
+                정의적 질문에서는 정확도가 낮게 나타났습니다.
               </p>
             </div>
           </div>

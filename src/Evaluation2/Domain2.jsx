@@ -58,10 +58,14 @@ export default function Domain() {
     }
   };
 
+  
+    const handleLogoClick = () => {
+    navigate("/users/main2");
+  };
   return (
     <div className="domain-container">
     <aside className="docs-sidebar">
-        <h2 className="docs-sidebar-title">DEEP DATA</h2>
+        <h2 className="docs-sidebar-title" onClick={handleLogoClick} style={{cursor:"pointer"}}>DEEP DATA</h2>
         <div className="step-wrapper">
           {["등록", "질문 생성", "답변", "결과"].map((label, index) => (
             <div key={index} className="step-item">
@@ -96,8 +100,7 @@ export default function Domain() {
             id="domain_select_value"
           >
             <option value="선택하세요">선택하세요</option>
-            <option value="법률">법률</option>
-            <option value="금융">금융</option>
+            <option value="finance">금융</option>
           </select>
 
           <button type="submit" disabled={loading}>

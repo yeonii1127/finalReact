@@ -51,7 +51,7 @@ export default function MainPage() {
 
             <li>포트폴리오</li>
             <li>커뮤니티</li>
-            <li onClick={() => navigate("/auth/login")}>로그인 / 회원가입</li>
+            <li onClick={() => navigate("/users/mypage")}>마이페이지</li>
           </ul>
         </nav>
       </header>
