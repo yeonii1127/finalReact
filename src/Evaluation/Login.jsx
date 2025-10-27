@@ -79,7 +79,7 @@ export default function Login() {
       );
 
       // 로그인 성공 후 이동
-      navigate("/users/main", { replace: true });
+      navigate("/", { replace: true });
     } catch (err) {
       // 백엔드에서 401/400 시 보낸 메시지를 최대한 살려서 노출
       const msg =

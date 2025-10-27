@@ -2,20 +2,37 @@ import "../css/FileUpload.css";
 import "../css/Domain.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { uploadFile, requestQGen } from "../js/documentApi";
+import { uploadFile, requestQGen, fetchGenQModels } from "../js/documentApi";
 
-const MODELS = [
-  { value: "swin_large_patch4_window7_224", label: "Swin-L (224)" },
-  { value: "resnet50", label: "ResNet-50" },
-  { value: "gpt-4o-mini", label: "GPT-4o-mini" },
-];
 
 export default function FileUpload() {
   const [file, setFile] = useState(null);
-  const [model, setModel] = useState(MODELS[0].value);
+  const [models, setModels] = useState([]);            // DB에서 받은 GEN_Q 모델 리스트
+  const [model, setModel] = useState("");              // 선택된 모델 (model_key)
   const [loading, setLoading] = useState(false);
+  const [loadingModels, setLoadingModels] = useState(true);
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const list = await fetchGenQModels(); // [{modelId, name, provider, modelKey, ...}]
+        if (!mounted) return;
+        setModels(Array.isArray(list) ? list : []);
+        if (Array.isArray(list) && list.length > 0) {
+          // 기본 선택값: model_key 사용
+          setModel(list[0].modelKey || list[0].name || "");
+        }
+      } catch (e) {
+        console.error("GEN_Q 모델 불러오기 실패:", e);
+        alert("질문 생성 모델 목록을 불러오지 못했습니다.");
+      } finally {
+        if (mounted) setLoadingModels(false);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
   const handleFileChange = (e) => {
     setFile(e.target.files?.[0] ?? null);
   };
@@ -35,7 +52,13 @@ export default function FileUpload() {
 
     try {
       const u = await uploadFile({ file });
-      await requestQGen({ documentId: u.documentId, model });
+      if (!model) { throw new Error("질문 생성 모델이 선택되지 않았습니다."); }
+      const selectedModel = models.find((m) => m.modelKey === model || m.name === model);
+      await requestQGen({
+        documentId: u.documentId,
+        modelName: selectedModel?.name || model,
+        modelId: selectedModel?.modelId,
+      });
       navigate(`/users/questions`);
     } catch (error) {
       console.error("업로드/생성 실패:", error);
@@ -102,13 +125,13 @@ export default function FileUpload() {
           <div className="upload-right">
             <div className="file-model-box">
               <p>질의 생성 모델 선택</p>
-              <select value={model} onChange={handleModelChange}>
-                {MODELS.map((m) => (
-                  <option key={m.value} value={m.value}>
-                    {m.label}
-                  </option>
-                ))}
-              </select>
+            <select value={model} onChange={handleModelChange} disabled={loadingModels}>
+              {models.map((m) => (
+                <option key={m.modelId} value={m.modelKey || m.name}>
+                  {m.name} {m.provider ? `(${m.provider})` : ""}
+                </option>
+              ))}
+            </select>
             </div>
 
             <button type="submit" className="file-next-btn" disabled={loading}>

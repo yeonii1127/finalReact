@@ -36,7 +36,6 @@ export default function App() {
 
         {/* ✅ /users 이하 전체를 가드로 보호 (세션 확인 → OK면 Outlet 하위 렌더) */}
         <Route path="/users" element={<UsersGuard />}>
-          <Route path="main" element={<UsersMain />} />
           <Route path="domain" element={<UsersDomain />} />
           <Route path="upload" element={<UsersUpload />} />
           <Route path="questions" element={<QuestionList />} />

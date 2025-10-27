@@ -41,7 +41,7 @@ export default function MainPage() {
             <li>COMPANY</li>
             <li onClick={() => navigate("/users/domain")}>데이터 평가</li>
             <li>포트폴리오</li>
-            <li onClick={() => navigate("/auth/aidic")}>커뮤니티</li>
+            <li>커뮤니티</li>
 
             {/* ✅ 로그인 여부에 따라 분기 */}
             {isLoggedIn ? (

@@ -29,9 +29,11 @@ export async function fetchQuestionsByDoc(documentId) {
 }
 
 /** 파이썬에 "질문 생성" 요청 (파이썬이 생성 후 스프링에 콜백 저장) */
-export async function requestQGen({ documentId, model, lang = "ko" }) {
+export async function requestQGen({ documentId, modelName, modelId, lang = "ko" }) {
   const res = await axios.post(`${PY}/generate-questions`, {
-    documentId, model, lang,               // JSON 바디
+    documentId,
+    genQModel: { name: modelName, modelId },
+    lang,
   });
   return res.data;                         // { ok: true, count: … }
 }
@@ -43,4 +45,12 @@ export async function fetchFlatQuestionsByDoc(documentId) {
     withCredentials: true,
   });
   return res.data; // ["질문1","질문2","질문3",...]
+}
+
+/** GEN_Q 모델 목록 조회 (DB에서 가져옴) */
+export async function fetchGenQModels() {
+  const res = await axios.get(`${SPRING}/models/genQ`, {
+    withCredentials: true,
+  });
+  return res.data; // Models[]
 }
