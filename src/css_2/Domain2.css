@@ -127,17 +127,27 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding-left: 100px;
+  justify-content: flex-start; /* 중앙이 아니라 위쪽 기준으로 */
+  align-items: flex-start; /* 가로 중앙 정렬 */
+  padding-top: 120px; /* 위쪽 여백만 줘서 균형 맞추기 */
+  padding-left:100px;
   color: #0c1c3f;
+  box-sizing: border-box;
+  padding:80px 100px;
+}
+.domain-title,
+.domain-subtitle {
+  width: 900px;         /* domain-box 폭과 맞춤 */
+  margin: 0 auto;
+  text-align: left;
+  box-sizing: border-box;
 }
 
 /* 타이틀 */
 .domain-title {
   font-size: 28px;
   font-weight: 700;
-  color: #0c1c3f;
+  color: #132d64;
   margin-bottom: 8px;
 }
 
@@ -167,10 +177,7 @@ html, body {
   transition: 0.3s ease;
 }
 
-.domain-box:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-}
+
 
 /* ============================= */
 /* 폼 내부 요소 */

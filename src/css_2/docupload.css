@@ -37,66 +37,66 @@ html, body {
   margin-bottom: 80px;
 }
 
-.step-wrapper{
-  display:flex;
-  flex-direction:column;
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap:50px;
-  transform:scale(1.05);
-  transform-origin:top center;
+  gap: 50px;
+  transform: scale(1.05);
+  transform-origin: top center;
 }
 
-.step-item{
-  position:relative;
-  display:flex;
-  align-items:flex-start;
-  flex-direction:row;
-  text-align:left;
-  gap:12px;
+.step-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 12px;
 }
 
-.step-circle{
+.step-circle {
   width: 28px;
-  height:28px;
-  border-radius:50%;
-  background-color:rgba(255,255,255,0.4);
-  color:#666;
-  font-size:14px;
-  font-weight:600;
-  display:flex;
-  align-items:center;
-  justify-content :center;
-  transition : 0.3s;
+  height: 28px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
 }
 
-.step-label{
-  font-size :13px;
-  color:#333;
-  line-height:1.3;
-  width:120px;
-  text-align:left;
-  margin-top:2px;
+.step-label {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.3;
+  width: 120px;
+  text-align: left;
+  margin-top: 2px;
 }
 
-.step-line{
-  position:absolute;
-  left:13px;
-  top:28px;
-  width:2px;
-  height:85px;
-   background-color: rgba(200,200,200,0.4);
+.step-line {
+  position: absolute;
+  left: 13px;
+  top: 28px;
+  width: 2px;
+  height: 85px;
+  background-color: rgba(200, 200, 200, 0.4);
 }
 
 .step-circle.active {
-   background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
   color: white;
   animation: pulse 1.5s infinite;
 }
 
 .step-circle.completed {
-   background-color: #10b981;
+  background: linear-gradient(135deg, #10b981, #34d399);
   color: white;
 }
+
 /* ========================== */
 /* 메인 */
 /* ========================== */
@@ -108,6 +108,7 @@ html, body {
 .docs-title {
   font-size: 28px;
   font-weight: 700;
+  color: #132d64;
   margin-bottom: 8px;
 }
 
@@ -122,9 +123,7 @@ html, body {
 /* ========================== */
 .upload-box {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  align-items: stretch;
   background: rgba(255, 255, 255, 0.85);
   width: 960px;
   padding: 60px 70px;
@@ -133,11 +132,9 @@ html, body {
   backdrop-filter: blur(14px);
   gap: 50px;
   margin-bottom: 80px;
-  box-sizing: border-box;
   min-height: 500px;
 }
 
-/* 왼쪽 - 업로드 */
 .upload-left {
   flex: 1;
   display: flex;
@@ -145,19 +142,14 @@ html, body {
   justify-content: center;
   border-right: 1px solid rgba(200, 200, 255, 0.3);
   padding-right: 50px;
-  height: auto;
-  box-sizing: border-box;
 }
 
-/* 오른쪽 - 모델 선택 */
 .upload-right {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
   gap: 10px;
-  box-sizing: border-box;
   transform: translateY(55px);
 }
 
@@ -169,7 +161,6 @@ html, body {
   font-weight: 600;
   color: #1f49a5;
   margin-bottom: 6px;
-  text-align: left;
 }
 
 .file-model-box select {
@@ -187,7 +178,6 @@ html, body {
   box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.15);
 }
 
-/* 버튼 */
 .btn-box.inside {
   display: flex;
   justify-content: flex-end;
@@ -195,35 +185,6 @@ html, body {
   margin-top: 30px;
 }
 
-/* 반응형 */
-@media (max-width: 1100px) {
-  .upload-box {
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 30px;
-    width: 90%;
-  }
-
-  .upload-left {
-    border-right: none;
-    border-bottom: 1px solid rgba(200, 200, 255, 0.3);
-    padding-bottom: 30px;
-  }
-
-  .upload-right {
-    width: 100%;
-    align-items: center;
-  }
-
-  .btn-box.inside {
-    justify-content: center;
-  }
-}
-
-/* ========================== */
-/* 버튼 스타일 */
-/* ========================== */
-.qmake-btn,
 .file-next-btn {
   width: 120px;
   height: 44px;
@@ -231,17 +192,10 @@ html, body {
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  transition: 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 업로드 버튼 */
-.file-next-btn {
   background: linear-gradient(135deg, #4a6cf7, #7d9aff);
-  border: 1.5px solid transparent;
   color: white;
+  border: none;
+  transition: 0.3s;
 }
 
 .file-next-btn:hover {
@@ -249,173 +203,104 @@ html, body {
 }
 
 /* ========================== */
-/* ✅ 로딩 전체화면 (사이드바 X) */
+/* ✅ 로딩 상태 (Progress 포함) */
 /* ========================== */
-.loading-fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(255, 255, 255, 0.95);
+.loading-status-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  z-index: 999;
+  justify-content: center;
+  text-align: center;
+  height: 80vh;
+  color: #132d64;
+  animation: fadeIn 0.8s ease-in;
 }
 
-.loading-fullscreen .loading-spinner {
-  border: 6px solid #e0e7ff;
-  border-top: 6px solid #4a6cf7;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.loading-fullscreen p {
+.loading-title {
+  font-size: 26px;
+  font-weight: 700;
   color: #1f49a5;
-  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.loading-subtitle {
+  font-size: 16px;
+  color: #4a6cf7;
+  margin-bottom: 40px;
+  font-weight: 500;
+  animation: pulseText 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Progress bar wrapper */
+.loading-progress-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.loading-progress-bar {
+  width: 400px;
+  height: 12px;
+  background: rgba(210, 220, 255, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.loading-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a6cf7, #7d9aff, #4a6cf7);
+  background-size: 200% 100%;
+  border-radius: 10px;
+  animation: loadingBarShift 2s linear infinite;
+  transition: width 0.4s ease-in-out;
+}
+
+@keyframes loadingBarShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.loading-progress-text {
+  font-size: 14px;
+  color: #1f2d63;
   font-weight: 600;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* ========================== */
-/* ✅ 회전목마형 질문 박스 (3D 효과) */
+/* 질문/답변 카드 및 전환 */
 /* ========================== */
-.question-box {
-  width: 950px;
-  min-height: 420px;
-  background: rgba(255, 255, 255, 0.65);
-  border-radius: 20px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  padding: 45px 60px;
-  margin: 100px auto;
-  text-align: left;
-  position: relative;
-  transition: all 0.6s ease;
-  transform-style: preserve-3d;
-}
-
-.question-box::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 6px;
-  width: 100%;
-  border-radius: 20px 20px 0 0;
-  background: linear-gradient(90deg, #4a6cf7, #7d9aff, #a3bfff);
-  opacity: 0.9;
-}
-
-/* ========================== */
-/* 🎠 회전목마 효과 */
-/* ========================== */
-.carousel-motion {
-  width: 900px;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 40px 50px;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
-  margin: 100px auto;
-  text-align: left;
-  transform-style: preserve-3d;
-  perspective: 2000px;
-  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
-}
-
-/* 중앙 박스 */
-.carousel-motion.orbit-in {
-  transform: rotateY(0deg) translateZ(0px);
-  opacity: 1;
-}
-
-/* 오른쪽으로 회전하며 뒤로 빠지는 */
-.carousel-motion.orbit-out {
-  transform: rotateY(60deg) translateZ(-400px);
-  opacity: 0;
-}
-
-/* ========================== */
-/* 질문 텍스트 스타일 */
-/* ========================== */
-.question-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1f49a5;
-  margin-bottom: 30px;
-  text-align: center;
-  letter-spacing: -0.3px;
-}
-
-
-.question-item {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(220, 225, 255, 0.6);
-  border-radius: 14px;
-  padding: 15px 18px;
-  margin-bottom: 16px;
-  font-size: 16px;
-  color: #0c1c3f;
-  font-weight: 500;
-  line-height: 1.5;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-}
-
-.question-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 248, 255, 0.95));
-  border-color: rgba(160, 180, 255, 0.6);
-}
-
-.question-box ul {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 15px;
-  padding: 0;
-  list-style: none;
-  margin: 0;
-}
-.answer-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1f49a5;
-  margin-bottom: 25px;
-  text-align: center;
-}
-
 .answer-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  width:100%;
-  margin-top:80px;
+  width: 100%;
+  margin-top: 80px;
+  transition: all 0.8s ease-in-out;
+  transform-origin: center;
 }
 
 .answer-card {
-  width: 1000px; /* 👈 크기 줄이기 (기존보다 훨씬 슬림) */
+  width: 1000px;
   background: #f7faff;
   border-radius: 12px;
   padding: 18px 22px;
   border: 1px solid #e3e9ff;
-  transition: all 0.3s ease;
   box-sizing: border-box;
-  margin-top:20px;
+  transition: all 0.3s ease;
 }
 
 .answer-card:hover {
@@ -423,59 +308,13 @@ html, body {
   transform: translateY(-2px);
 }
 
-/* ✅ 질문 / 답변 텍스트 */
 .answer-card .question {
   font-weight: 600;
   color: #132d64;
-  margin-bottom: 10px;
   font-size: 20px;
 }
 
-.answer-card .answer {
-  color: #333;
-  line-height: 1.6;
-  font-size: 19px;
-}
-
-@keyframes fadeUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-@media (max-width: 900px) {
-  .answer-card {
-    width: 90%;
-  }
-}
-
-.step-circle.completed {
-  background: linear-gradient(135deg, #10b981, #34d399); /* 초록색 그라디언트 */
-  color: white;
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.3); /* 은은한 그림자만 */
-  /* animation 제거 → 반짝임 없음 */
-}
-
-
-@keyframes pulseGreen {
-  0% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
-}
-
-/* ========================== */
-/* 🌈 부드러운 카드 전환 애니메이션 */
-/* ========================== */
+/* 카드 전환 애니메이션 */
 .carousel-rotate {
   transition: all 0.8s ease-in-out;
   transform-origin: center;
@@ -486,11 +325,10 @@ html, body {
   animation: fadeSlideIn 0.9s ease both;
 }
 
-.rotate-out { 
+.rotate-out {
   animation: fadeSlideOut 0.9s ease both;
 }
 
-/* 들어올 때: 살짝 오른쪽에서 흐르듯 */
 @keyframes fadeSlideIn {
   0% {
     transform: translateX(60px) scale(0.95);
@@ -506,7 +344,6 @@ html, body {
   }
 }
 
-/* 나갈 때: 왼쪽으로 흐르면서 사라짐 */
 @keyframes fadeSlideOut {
   0% {
     transform: translateX(0) scale(1);
@@ -521,39 +358,202 @@ html, body {
     opacity: 0;
   }
 }
-
-/* ========================== */
-/* 🔁 로딩 문구 순환 애니메이션 */
-/* ========================== */
-
-.loop-fade p {
-  opacity: 0;
-  animation: messageLoop 6s linear infinite;
+/* =============================== */
+/* 로딩 스피너 */
+/* =============================== */
+.loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }
 
-.loop-fade p:nth-child(1) {
-  animation-delay: 0s;
-}
-.loop-fade p:nth-child(2) {
-  animation-delay: 2s;
-}
-.loop-fade p:nth-child(3) {
-  animation-delay: 4s;
-}
-
-@keyframes messageLoop {
-  0% { opacity: 0; transform: translateY(10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  30% { opacity: 1; transform: translateY(0); }
-  40% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 0; transform: translateY(-10px); }
+.loading-spinner {
+  border: 6px solid #e0e7ff;
+  border-top: 6px solid #4a6cf7;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
 }
 
-.dots {
-  animation: blink 1.5s infinite;
+.loading-text {
+  color: #1f49a5;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =============================== */
+/* 질문 생성 후 진행 바 */
+/* =============================== */
+.mini-progress-wrapper {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.mini-progress-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2d63;
+  animation: pulseText 1.6s infinite ease-in-out;
+}
+
+.mini-progress-bar {
+  width: 400px;
+  height: 10px;
+  background: rgba(220, 225, 255, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a6cf7, #7d9aff, #4a6cf7);
+  background-size: 200% 100%;
+  animation: loadingBarShift 2s linear infinite;
+  transition: width 0.3s ease-in-out;
+}
+
+.mini-progress-percent {
+  font-size: 13px;
+  color: #4a6cf7;
+  font-weight: 600;
+}
+
+@keyframes loadingBarShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes pulseText {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* =============================== */
+/* 로딩 스피너 */
+/* =============================== */
+.loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.loading-spinner {
+  border: 6px solid #e0e7ff;
+  border-top: 6px solid #4a6cf7;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+.loading-text {
+  color: #1f49a5;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =============================== */
+/* 질문 생성 후 진행 바 */
+/* =============================== */
+.mini-progress-wrapper {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.mini-progress-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2d63;
+  animation: pulseText 1.6s infinite ease-in-out;
+}
+
+.mini-progress-bar {
+  width: 400px;
+  height: 10px;
+  background: rgba(220, 225, 255, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a6cf7, #7d9aff, #4a6cf7);
+  background-size: 200% 100%;
+  animation: loadingBarShift 2s linear infinite;
+  transition: width 0.3s ease-in-out;
+}
+
+.mini-progress-percent {
+  font-size: 13px;
+  color: #4a6cf7;
+  font-weight: 600;
+}
+
+@keyframes loadingBarShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes pulseText {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
