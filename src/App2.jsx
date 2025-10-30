@@ -29,7 +29,6 @@ export default function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
         <Route path='/auth/main' element={<MainPage/>}/>
-        <Route path='/auth/aidic' element={<Aidic />}/>
         
         {/* 필요 시 회원가입 등도 여기서 공개로 라우팅
             <Route path="/auth/signup" element={<Signup />} /> */}
@@ -45,8 +44,7 @@ export default function App() {
           <Route path="update" element={<UserUpdate />}/>
           <Route path="evalstatus" element={<EvalStatus />}/>
           <Route path="main2" element={<Mainpage2/>}/>
-          <Route path="mypage" element={<Mypage/>}/> {/* auth로 바꾸기 */}
-
+          <Route path="mypage" element={<Mypage/>}/> 
 
 
           <Route path ="dupload" element={<Docupload/>}/>

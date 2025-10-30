@@ -146,17 +146,24 @@ const handlePasswordCheck = async (e) => {
             src={logo}
             alt="로고"
             className="site-logo"
-            onClick={() => navigate("/auth/main")}
+            onClick={() => navigate("/users/main2")}
           />
         </div>
         <nav className="nav-menu">
           <ul>
             <li>서비스 이용</li>
             <li>COMPANY</li>
-            <li onClick={() => navigate("/users/domain")}>데이터 평가</li>
+             {/* ✅ 드롭다운 메뉴 */}
+            <li className="dropdown">
+              데이터 평가
+              <ul className="dropdown-menu">
+                <li onClick={() => navigate("/users/domain")}>도메인 선택</li>
+                <li onClick={() => navigate("/users/domain2")}>문서 업로드</li>
+              </ul>
+            </li>
             <li>포트폴리오</li>
             <li onClick={() => navigate("/auth/aidic")}>커뮤니티</li>
-            <li onClick={() => navigate("/auth/mypage")}>마이페이지</li>
+            <li onClick={() => navigate("/users/mypage")}>마이페이지</li>
           </ul>
         </nav>
       </header>

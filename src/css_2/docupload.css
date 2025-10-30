@@ -291,16 +291,32 @@ html, body {
 /* ✅ 회전목마형 질문 박스 (3D 효과) */
 /* ========================== */
 .question-box {
-  width: 900px;
-  height: 400px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
-  padding: 40px 50px;
+  width: 950px;
+  min-height: 420px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 45px 60px;
   margin: 100px auto;
   text-align: left;
+  position: relative;
+  transition: all 0.6s ease;
   transform-style: preserve-3d;
-  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+.question-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #4a6cf7, #7d9aff, #a3bfff);
+  opacity: 0.9;
 }
 
 /* ========================== */
@@ -338,17 +354,42 @@ html, body {
   font-size: 22px;
   font-weight: 700;
   color: #1f49a5;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  text-align: center;
+  letter-spacing: -0.3px;
 }
+
 
 .question-item {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(220, 225, 255, 0.6);
+  border-radius: 14px;
+  padding: 15px 18px;
+  margin-bottom: 16px;
   font-size: 16px;
-  color: #111;
-  border-bottom: 1px solid #e5e5e5;
-  padding: 12px 0;
+  color: #0c1c3f;
+  font-weight: 500;
+  line-height: 1.5;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
 }
 
+.question-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 248, 255, 0.95));
+  border-color: rgba(160, 180, 255, 0.6);
+}
 
+.question-box ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
 .answer-title {
   font-size: 22px;
   font-weight: 700;
@@ -363,7 +404,7 @@ html, body {
   align-items: center;
   gap: 20px;
   width:100%;
-  margin-top:30px;
+  margin-top:80px;
 }
 
 .answer-card {
@@ -374,6 +415,7 @@ html, body {
   border: 1px solid #e3e9ff;
   transition: all 0.3s ease;
   box-sizing: border-box;
+  margin-top:20px;
 }
 
 .answer-card:hover {
@@ -386,13 +428,13 @@ html, body {
   font-weight: 600;
   color: #132d64;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .answer-card .answer {
   color: #333;
   line-height: 1.6;
-  font-size: 15px;
+  font-size: 19px;
 }
 
 @keyframes fadeUp {
@@ -429,4 +471,89 @@ html, body {
   100% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
   }
+}
+
+/* ========================== */
+/* 🌈 부드러운 카드 전환 애니메이션 */
+/* ========================== */
+.carousel-rotate {
+  transition: all 0.8s ease-in-out;
+  transform-origin: center;
+  opacity: 1;
+}
+
+.rotate-in {
+  animation: fadeSlideIn 0.9s ease both;
+}
+
+.rotate-out { 
+  animation: fadeSlideOut 0.9s ease both;
+}
+
+/* 들어올 때: 살짝 오른쪽에서 흐르듯 */
+@keyframes fadeSlideIn {
+  0% {
+    transform: translateX(60px) scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-8px) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* 나갈 때: 왼쪽으로 흐르면서 사라짐 */
+@keyframes fadeSlideOut {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: translateX(-40px) scale(0.97);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(-60px) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* ========================== */
+/* 🔁 로딩 문구 순환 애니메이션 */
+/* ========================== */
+
+.loop-fade p {
+  opacity: 0;
+  animation: messageLoop 6s linear infinite;
+}
+
+.loop-fade p:nth-child(1) {
+  animation-delay: 0s;
+}
+.loop-fade p:nth-child(2) {
+  animation-delay: 2s;
+}
+.loop-fade p:nth-child(3) {
+  animation-delay: 4s;
+}
+
+@keyframes messageLoop {
+  0% { opacity: 0; transform: translateY(10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(0); }
+  40% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.dots {
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }

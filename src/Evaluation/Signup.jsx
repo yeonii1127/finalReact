@@ -112,12 +112,15 @@ export default function Signup() {
           <ul>
             <li>서비스 이용</li>
             <li>COMPANY</li>
-            <li
-              className="login-link"
-              onClick={() => navigate("/users/domain")}
-            >
+            {/* ✅ 드롭다운 메뉴 */}
+            <li className="dropdown"> 
               데이터 평가
+              <ul className="dropdown-menu">
+                <li>도메인 선택</li>
+                <li >문서 업로드</li>
+              </ul>
             </li>
+
             <li>포트폴리오</li>
             <li className="aidic-link" onClick={() => navigate("/auth/aidic")}>
               커뮤니티

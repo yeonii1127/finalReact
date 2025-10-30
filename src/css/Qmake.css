@@ -131,8 +131,9 @@ body {
 
 /* 문서 ID + 버튼 한 줄 정렬 */
 .qmake-top-bar {
-  width: 900px;
+  width: 100%;
   display: flex;
+  max-width:1400px;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
@@ -159,6 +160,9 @@ body {
   cursor: pointer;
   transition: 0.3s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  white-space:nowrap;
+  min-width:130px;
+  text-align:center;
 }
 
 .qmake-btn:hover {

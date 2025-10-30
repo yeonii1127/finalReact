@@ -36,7 +36,7 @@ export default function FileUpload() {
   const handleFileChange = (e) => {
     setFile(e.target.files?.[0] ?? null);
   };
-
+  
   const handleModelChange = (e) => {
     setModel(e.target.value);
   };

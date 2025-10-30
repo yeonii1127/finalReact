@@ -37,25 +37,8 @@ export default function Domain() {
     }
 
     setLoading(true);
-    try {
-      const { data } = await sendDomain(domain);
-      console.log("서버 응답:", data);
-
-      if (data.success) {
-        sessionStorage.setItem("selectedDomain", domain);
-        navigate("/users/dupload", { replace: true });
-      } else {
-        setErrMsg("도메인 설정 실패");
-      }
-    } catch (error) {
-      console.error("도메인 전송 오류:", error);
-      const msg =
-        error?.response?.data?.message ||
-        "서버와의 통신에 실패했습니다. 다시 시도해주세요.";
-      setErrMsg(msg);
-    } finally {
-      setLoading(false);
-    }
+     navigate("/users/dupload", { replace: true });
+   
   };
 
   

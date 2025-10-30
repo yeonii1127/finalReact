@@ -6,7 +6,9 @@ body {
   font-family: "Pretendard", sans-serif;
 }
 
+/* ============================= */
 /* 전체 레이아웃 */
+/* ============================= */
 .file-container {
   display: flex;
   width: 100vw;
@@ -18,7 +20,9 @@ body {
   box-sizing: border-box;
 }
 
-/* ---- 사이드바 ---- */
+/* ============================= */
+/* 사이드바 */
+/* ============================= */
 .file-sidebar {
   width: 280px;
   padding: 40px 20px;
@@ -41,6 +45,7 @@ body {
   color: #1f49a5;
   margin-bottom: 80px;
   letter-spacing: 0.5px;
+  cursor: pointer;
 }
 
 .step-wrapper {
@@ -113,7 +118,9 @@ body {
   }
 }
 
-/* ---- 메인 ---- */
+/* ============================= */
+/* 메인 영역 */
+/* ============================= */
 .file-main {
   flex: 1;
   display: flex;
@@ -125,7 +132,9 @@ body {
   color: #0c1c3f;
 }
 
+/* ============================= */
 /* 제목 영역 */
+/* ============================= */
 .box-title {
   margin-bottom: 40px;
   text-align: left;
@@ -143,14 +152,16 @@ body {
   color: #555;
 }
 
-/* ✅ 업로드 박스 (가로 2열 배치) */
+/* ============================= */
+/* 업로드 박스 (좌우 배치) */
+/* ============================= */
 .upload-box {
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(230, 230, 255, 0.5);
   border-radius: 16px;
-  padding: 30px 60px; /* ✅ padding 살짝 줄임 */
+  padding: 30px 60px;
   width: 900px;
-  height: 240px; /* ✅ 실제 세로 크기 줄이기 */
+  height: 240px;
   box-sizing: border-box;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   backdrop-filter: blur(18px);
@@ -158,21 +169,24 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: stretch; /* ✅ stretch로 변경해서 내용 높이 강제 맞춤 */
+  align-items: center; /* ✅ 수평 중앙정렬 (왼쪽-오른쪽 높이 일치) */
   text-align: center;
   transition: all 0.3s ease;
 }
 
-/* 왼쪽 영역 */
+/* ============================= */
+/* 왼쪽 영역 (파일 등록) */
+/* ============================= */
 .upload-left {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly; /* ✅ 내부 요소 간격 균등 */
+  justify-content: center; /* ✅ 중앙 정렬 */
   border-right: 1px solid rgba(220, 220, 255, 0.4);
   padding-right: 40px;
 }
+
 .upload-text {
   font-size: 22px;
   font-weight: bold;
@@ -202,15 +216,20 @@ body {
   border-color: transparent;
 }
 
+/* ============================= */
+/* 오른쪽 영역 (모델 선택 + 업로드) */
+/* ============================= */
 .upload-right {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly; /* ✅ 내부 간격 균등 */
+  justify-content: center; /* ✅ 중앙 정렬로 수평 맞춤 */
   gap: 12px;
   padding-left: 40px;
+  margin-top: -35px; /* ✅ 아주 살짝 위로 올림 */
 }
+
 .file-model-box p {
   margin-bottom: 8px;
   font-weight: 600;
@@ -241,13 +260,16 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
+  margin-top:30px;
 }
 
 .file-next-btn:hover {
   background: linear-gradient(135deg, #3652d9, #6d8aff);
 }
 
+/* ============================= */
 /* 이전 버튼 */
+/* ============================= */
 .qmake-btn {
   margin-top: 20px;
   background-color: transparent;
@@ -259,6 +281,7 @@ body {
   font-weight: 600;
   transition: all 0.3s ease;
 }
+
 
 .qmake-btn:hover {
   background-color: #1f49a5;

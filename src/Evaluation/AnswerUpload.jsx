@@ -159,7 +159,7 @@ export default function AnswerUpload() {
       <main className="ans-main">
         <h1 className="ans-title">답변 파일 등록</h1>
         <p className="ans-subtitle">
-          생성된 Q에 대한 답변 파일을 업로드하고, 평가할 모델을 선택하세요.
+          생성된 Q에 대한 답변을 업로드하고, 평가할 모델을 선택하세요.
         </p>
 
         <form onSubmit={handleSubmit} encType="multipart/form-data">
