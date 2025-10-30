@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../css/Qmake.css";
 import React from "react";
@@ -7,28 +7,50 @@ import axios from "axios";
 
 export default function Qmake() {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [documentId, setDocumentId] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  // ✅ 문서 ID 가져오기
   useEffect(() => {
-    const fetchLatestDoc = async () => {
+    const resolveDocumentId = async () => {
       try {
+        // (1) URL 쿼리파라미터 우선
+        const sp = new URLSearchParams(location.search);
+        const fromUrl = sp.get("documentId");
+        if (fromUrl) {
+          setDocumentId(Number(fromUrl));
+          return;
+        }
+
+        // (2) 내 최신 질문 묶음의 documentId
+        try {
+          const mine = await axios.get("/api/questions/mine", {
+            withCredentials: true,
+          });
+          const latestQ = Array.isArray(mine.data) ? mine.data[0] : null; // DESC 가정
+          if (latestQ?.documentId) {
+            setDocumentId(latestQ.documentId);
+            return;
+          }
+        } catch (_) {
+          /* fallback 진행 */
+        }
+
+        // (3) 최신 업로드 문서
         const res = await axios.get("/api/documents/latest", {
           withCredentials: true,
         });
-        setDocumentId(res.data.documentId);
+        setDocumentId(res?.data?.documentId ?? res?.data?.id);
       } catch (e) {
-        console.error("문서 ID 조회 실패:", e);
+        console.error("문서 ID 결정 실패:", e);
         setError("문서 ID를 불러오지 못했습니다.");
       }
     };
-    fetchLatestDoc();
-  }, []);
+    resolveDocumentId();
+  }, [location.search]);
 
   // ✅ 질문 목록 불러오기
   const loadQuestions = async () => {
@@ -63,7 +85,13 @@ export default function Qmake() {
     <div className="qmake-container">
       {/* ---- 사이드바 ---- */}
       <aside className="qmake-sidebar">
-        <h2 className="qmake-sidebar-title" onClick={handleLogoClick} style={{cursor: "pointer"}}>DEEP DATA</h2>
+        <h2
+          className="qmake-sidebar-title"
+          onClick={handleLogoClick}
+          style={{ cursor: "pointer" }}
+        >
+          DEEP DATA
+        </h2>
 
         <div className="step-wrapper">
           {[
@@ -130,24 +158,23 @@ export default function Qmake() {
 
         {/* 질문 박스 */}
         <div className="qmake-q-box">
-          {!loading && !error && questions.length > 0 ? (
-            questions.slice(0, 5).map((text, i) => (
-              <div key={i} className="q-item">
-                <span className="q-number">Q{i + 1}.</span>
-                <span className="q-text">{text}</span>
-              </div>
-            ))
-          ) : (
-            !loading &&
-            !error && <p>질문 데이터가 없습니다.</p>
-          )}
+          {!loading && !error && questions.length > 0
+            ? questions.slice(0, 5).map((text, i) => (
+                <div key={i} className="q-item">
+                  <span className="q-number">Q{i + 1}.</span>
+                  <span className="q-text">{String(text ?? "")}</span>
+                </div>
+              ))
+            : !loading && !error && <p>질문 데이터가 없습니다.</p>}
         </div>
 
         {/* 카드 영역 */}
         <div className="qmake-card-wrapper">
           <div className="qmake-card">
             <h3>직접 답변 입력하기</h3>
-            <p>생성된 Q를 다운로드하여 직접 모델을 돌린 후 제출할 수 있습니다.</p>
+            <p>
+              생성된 Q를 다운로드하여 직접 모델을 돌린 후 제출할 수 있습니다.
+            </p>
             <button
               className="run-btn"
               onClick={() =>
@@ -155,10 +182,7 @@ export default function Qmake() {
                   state: {
                     documentId,
                     placeholder: (questions || [])
-                      .map(
-                        (q, i) =>
-                          `Q${i + 1}. ${q?.questionText ?? String(q ?? "")}`
-                      )
+                      .map((q, i) => `Q${i + 1}. ${String(q ?? "")}`)
                       .join("\n\n"),
                   },
                 })
@@ -170,7 +194,9 @@ export default function Qmake() {
 
           <div className="qmake-card">
             <h3>내 모델 등록하기</h3>
-            <p>사용자 모델을 등록하면 자동으로 답변이 생성되고 평가가 진행됩니다.</p>
+            <p>
+              사용자 모델을 등록하면 자동으로 답변이 생성되고 평가가 진행됩니다.
+            </p>
             <button
               className="run-btn"
               onClick={() => navigate("/users/modelUpload")}
@@ -193,11 +219,9 @@ export default function Qmake() {
               <h2>전체 질문 목록</h2>
               <div className="qmake-modal-questions">
                 {questions.map((q, i) => (
-                  <div key={q.questionId ?? i} className="modal-q-item">
+                  <div key={i} className="modal-q-item">
                     <span className="q-number">Q{i + 1}.</span>
-                    <span className="q-text">
-                      {q.questionText ?? String(q ?? "")}
-                    </span>
+                    <span className="q-text">{String(q ?? "")}</span>
                   </div>
                 ))}
               </div>

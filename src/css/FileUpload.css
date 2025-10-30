@@ -227,7 +227,7 @@ body {
   justify-content: center; /* ✅ 중앙 정렬로 수평 맞춤 */
   gap: 12px;
   padding-left: 40px;
-  margin-top: -35px; /* ✅ 아주 살짝 위로 올림 */
+  margin-top: -45px; /* ✅ 아주 살짝 위로 올림 */
 }
 
 .file-model-box p {

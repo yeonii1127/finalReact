@@ -31,7 +31,7 @@ export default function MainPage() {
             src={logo}
             alt="로고"
             className="site-logo"
-            onClick={() => navigate("/auth/main")}
+            onClick={() => navigate("/users/mypage")}
           />
         </div>
 

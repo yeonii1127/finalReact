@@ -2,7 +2,7 @@
 import axios from "axios";                 // HTTP 요청 라이브러리
 
 const SPRING = "/api";    // 스프링 서버
-const PY     = "http://127.0.0.1:8095";    // 파이썬 서버(FastAPI)
+const PY = "/worker";    // 파이썬 서버(FastAPI)
 
 /** 파일 업로드: FormData로 보내야 함 */
 export async function uploadFile({ file, title, meta }) {
@@ -13,10 +13,16 @@ export async function uploadFile({ file, title, meta }) {
 
   // axios.post(url, data, 옵션)
   const res = await axios.post(`${SPRING}/files`, fd, {
-    withCredentials: true,                 // 세션 쿠키 포함(로그인 유지)
-    headers: { "Content-Type": "multipart/form-data" }, // 파일 업로드 헤더
+    withCredentials: true,
+    headers: { "Content-Type": "multipart/form-data" },
   });
-  return res.data;                         // 서버가 준 JSON 본문
+  const d = res?.data ?? {};
+  // ✅ 다양한 형태 방어적으로 수용
+  const documentId = d.documentId ?? d.id ?? d.document_id ?? d?.data?.documentId ?? d?.data?.id;
+  if (documentId == null) {
+    console.warn("uploadFile 응답에서 documentId를 찾을 수 없음:", d);
+  }
+  return { ...d, documentId };
 }
 
 /** 특정 문서에 달린 질문 목록 조회 */
@@ -28,14 +34,18 @@ export async function fetchQuestionsByDoc(documentId) {
   return res.data;                         // Question[]
 }
 
-/** 파이썬에 "질문 생성" 요청 (파이썬이 생성 후 스프링에 콜백 저장) */
-export async function requestQGen({ documentId, modelName, modelId, lang = "ko" }) {
-  const res = await axios.post(`${PY}/generate-questions`, {
+/** 파이썬(q_gen.py 단일파일 서버)에 질문 생성 요청
+ *  - 리액트에서 받은 전체 모델 객체(genQModel)를 그대로 전달
+ *  - userId, documentId, genQModel, lang
+ */
+export async function requestQGen({ userId, documentId, genQModel, lang = "ko" }) {
+  const res = await axios.post(`${PY}/run-by-document`, {
+    userId,
     documentId,
-    genQModel: { name: modelName, modelId },
+    genQModel, // { modelId, name, provider, modelKey, modelRole, params, createdAt }
     lang,
   });
-  return res.data;                         // { ok: true, count: … }
+  return res.data; // { ok, count, filePath, spring:{...} }
 }
 
 // 질문 JSON을 평탄화해서 불러오는 API
@@ -80,7 +90,7 @@ export async function getWorkerStatus(documentId) {
 export async function startPipeline({ userId, documentId, userModel, genQModel, evalModel }) {
   const payload = { userId, documentId, userModel, genQModel, evalModel };
   const res = await axios.post(`${PY}/start-pipeline`, payload, {
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
   });
   return res.data; // FastAPI의 응답(JSON)
 }

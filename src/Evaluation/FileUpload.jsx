@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadFile, requestQGen, fetchGenQModels } from "../js/documentApi";
 
-
 export default function FileUpload() {
   const [file, setFile] = useState(null);
-  const [models, setModels] = useState([]);            // DB에서 받은 GEN_Q 모델 리스트
-  const [model, setModel] = useState("");              // 선택된 모델 (model_key)
+  const [models, setModels] = useState([]); // DB에서 받은 GEN_Q 모델 리스트
+  const [model, setModel] = useState(""); // 선택된 모델 (model_key)
   const [loading, setLoading] = useState(false);
   const [loadingModels, setLoadingModels] = useState(true);
   const navigate = useNavigate();
+  const USER_ID = 41;
 
   React.useEffect(() => {
     let mounted = true;
@@ -31,12 +31,14 @@ export default function FileUpload() {
         if (mounted) setLoadingModels(false);
       }
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
   const handleFileChange = (e) => {
     setFile(e.target.files?.[0] ?? null);
   };
-  
+
   const handleModelChange = (e) => {
     setModel(e.target.value);
   };
@@ -52,14 +54,24 @@ export default function FileUpload() {
 
     try {
       const u = await uploadFile({ file });
-      if (!model) { throw new Error("질문 생성 모델이 선택되지 않았습니다."); }
-      const selectedModel = models.find((m) => m.modelKey === model || m.name === model);
-      await requestQGen({
+      if (!model) {
+        throw new Error("질문 생성 모델이 선택되지 않았습니다.");
+      }
+      const selectedModel = models.find(
+        (m) => m.modelKey === model || m.name === model
+      );
+      const resp = await requestQGen({
+        userId: USER_ID,
         documentId: u.documentId,
-        modelName: selectedModel?.name || model,
-        modelId: selectedModel?.modelId,
+        genQModel: selectedModel, // 전체 모델 객체를 그대로 전달
+        lang: "ko",
       });
-      navigate(`/users/questions`);
+      if (resp?.ok) {
+        navigate(`/users/questions?documentId=${u.documentId}`);
+      } else {
+        console.error("GenQ save failed:", resp);
+        alert("질문 저장에 실패했습니다.");
+      }
     } catch (error) {
       console.error("업로드/생성 실패:", error);
       alert("오류가 발생했습니다.");
@@ -68,7 +80,7 @@ export default function FileUpload() {
     }
   };
 
-   const handleLogoClick = () => {
+  const handleLogoClick = () => {
     navigate("/users/main2");
   };
 
@@ -76,7 +88,13 @@ export default function FileUpload() {
     <div className="file-container">
       {/* ---- 사이드바 ---- */}
       <aside className="file-sidebar">
-        <h2 className="file-sidebar-title" onClick={handleLogoClick} style={{cursor: "pointer"}}>DEEP DATA</h2>
+        <h2
+          className="file-sidebar-title"
+          onClick={handleLogoClick}
+          style={{ cursor: "pointer" }}
+        >
+          DEEP DATA
+        </h2>
 
         <div className="step-wrapper">
           {[
@@ -111,7 +129,11 @@ export default function FileUpload() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="upload-box" encType="multipart/form-data">
+        <form
+          onSubmit={handleSubmit}
+          className="upload-box"
+          encType="multipart/form-data"
+        >
           {/* 왼쪽 - 파일 등록 */}
           <div className="upload-left">
             <p className="upload-text">파일 드래그 & 등록</p>
@@ -120,7 +142,12 @@ export default function FileUpload() {
             <label htmlFor="fileUpload" className="upload-btn">
               파일 선택
             </label>
-            <input type="file" id="fileUpload" hidden onChange={handleFileChange} />
+            <input
+              type="file"
+              id="fileUpload"
+              hidden
+              onChange={handleFileChange}
+            />
 
             {file && <p className="file-name">{file.name}</p>}
           </div>
@@ -129,13 +156,17 @@ export default function FileUpload() {
           <div className="upload-right">
             <div className="file-model-box">
               <p>질의 생성 모델 선택</p>
-            <select value={model} onChange={handleModelChange} disabled={loadingModels}>
-              {models.map((m) => (
-                <option key={m.modelId} value={m.modelKey || m.name}>
-                  {m.name} {m.provider ? `(${m.provider})` : ""}
-                </option>
-              ))}
-            </select>
+              <select
+                value={model}
+                onChange={handleModelChange}
+                disabled={loadingModels}
+              >
+                {models.map((m) => (
+                  <option key={m.modelId} value={m.modelKey || m.name}>
+                    {m.name} {m.provider ? `(${m.provider})` : ""}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <button type="submit" className="file-next-btn" disabled={loading}>

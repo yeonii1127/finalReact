@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function Docupload() {
   const navigate = useNavigate();
 
-  // ===== 상태 =====
   const [file, setFile] = useState(null);
   const [step, setStep] = useState("upload"); // upload | loading | Q_GEN_DONE | A_GEN_DONE
   const [flip, setFlip] = useState(true);
@@ -17,17 +16,15 @@ export default function Docupload() {
   const [pairPage, setPairPage] = useState(0);
   const [pairFlip, setPairFlip] = useState(true);
 
-  // 파일 선택
   const handleFileChange = (e) => setFile(e.target.files?.[0] ?? null);
 
-  // 업로드 → 로딩
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStep("loading");
     setProgress(0);
   };
 
-  // 로딩 후 질문 단계 전환
+  // 로딩 후 질문 표시
   useEffect(() => {
     if (step === "loading") {
       const timeout = setTimeout(() => {
@@ -40,29 +37,39 @@ export default function Docupload() {
           { questionText: "관련 기관의 역할은 무엇인가요?" },
           { questionText: "주요 조항의 예외 사항은 무엇인가요?" },
         ]);
-      }, 3000);
+      }, 2500);
       return () => clearTimeout(timeout);
     }
   }, [step]);
 
-  // 질문 + 답변 progress 관리
+  // 질문/답변 전환 및 애니메이션 + 진행바
   useEffect(() => {
     if (step !== "Q_GEN_DONE" && step !== "A_GEN_DONE") return;
 
-    const totalPages =
-      step === "Q_GEN_DONE"
-        ? Math.ceil(questions.length / 3)
-        : Math.ceil(pairs.length / 3);
-    const interval = setInterval(() => {
-      setFlip(false);
+    const isQuestionStep = step === "Q_GEN_DONE";
+    const totalPages = Math.ceil(
+      (isQuestionStep ? questions.length : pairs.length) / 3
+    );
+
+    // 회전 애니메이션
+    const flipInterval = setInterval(() => {
+      if (isQuestionStep) {
+        setFlip(false);
+      } else {
+        setPairFlip(false);
+      }
       setTimeout(() => {
-        step === "Q_GEN_DONE"
-          ? setCurrentPage((prev) => (prev + 1) % totalPages)
-          : setPairPage((prev) => (prev + 1) % totalPages);
-        setFlip(true);
+        if (isQuestionStep) {
+          setCurrentPage((prev) => (prev + 1) % totalPages);
+          setFlip(true);
+        } else {
+          setPairPage((prev) => (prev + 1) % totalPages);
+          setPairFlip(true);
+        }
       }, 500);
     }, 3000);
 
+    // 진행바
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -83,6 +90,18 @@ export default function Docupload() {
                   q: "문서에서 제시된 핵심 정책은 무엇인가요?",
                   a: "핵심 정책은 데이터 표준화와 자동화된 문서 처리입니다.",
                 },
+                {
+                  q: "이 규정이 시행되면 어떤 효과가 기대되나요?",
+                  a: "행정 절차 간소화와 효율성 증대가 기대됩니다.",
+                },
+                {
+                  q: "관련 기관의 역할은 무엇인가요?",
+                  a: "중앙 행정기관은 정책 감독을, 지방 기관은 실행을 담당합니다.",
+                },
+                {
+                  q: "주요 조항의 예외 사항은 무엇인가요?",
+                  a: "보안 관련 정보는 공개 대상에서 제외됩니다.",
+                },
               ]);
               setProgress(0);
             }, 1000);
@@ -96,12 +115,11 @@ export default function Docupload() {
     }, 200);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(flipInterval);
       clearInterval(progressInterval);
     };
   }, [step, questions, pairs]);
 
-  // 3개씩 보여주기
   const getTriplet = (page, list) => list.slice(page * 3, page * 3 + 3);
   const visibleQuestions = getTriplet(currentPage, questions);
   const visiblePairs = getTriplet(pairPage, pairs);
@@ -207,7 +225,7 @@ export default function Docupload() {
           </div>
         )}
 
-        {/* 질문 생성 */}
+        {/* 질문 생성 + 답변 생성 */}
         {(step === "Q_GEN_DONE" || step === "A_GEN_DONE") && (
           <>
             <section className="carousel-rotate">
@@ -237,14 +255,18 @@ export default function Docupload() {
               </div>
             </section>
 
-            {/* progress bar (두 단계 공통) */}
+            {/* progress bar */}
             <div className="mini-progress-wrapper">
               <div className="mini-progress-text">
                 {step === "Q_GEN_DONE"
                   ? "문서를 기반으로 사용자 모델이 답변을 생성 중입니다..."
                   : "답변을 분석하고 결과를 정리 중입니다..."}
               </div>
-              <div className="mini-progress-bar">
+              <div
+                className={`mini-progress-bar ${
+                  step === "A_GEN_DONE" ? "green-bar" : ""
+                }`}
+              >
                 <div
                   className="mini-progress-fill"
                   style={{ width: `${progress}%` }}
