@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import UsersGuard from "./Guard/UsersGuard.jsx";
 import UsersDomain from "./Evaluation/Domain.jsx"; // /users/domain
 import Login from "./Evaluation/Login.jsx"; // /auth/login
-import NonMain from "./Nonauth/NonMain.jsx"; // 공개 홈(예시)
 import Signup from "./Evaluation/Signup.jsx";
 import UsersUpload from "./Evaluation/FileUpload.jsx";
 import QuestionList from "./Evaluation/Qmake.jsx";
@@ -13,7 +12,6 @@ import UserResult from "./Evaluation/Result.jsx";
 import UserUpdate from "./Evaluation/Update.jsx";
 import EvalStatus from "./Evaluation/EvalStatus.jsx";
 import MainPage from "./Evaluation/MainPage.jsx";
-import Aidic from "./Evaluation/Aidic.jsx";
 import Docupload from "./Evaluation2/Docupload.jsx";
 import Domain2 from "./Evaluation2/Domain2.jsx";
 import UserResult2 from "./Evaluation2/Result2.jsx";

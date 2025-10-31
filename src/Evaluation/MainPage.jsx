@@ -9,6 +9,7 @@ import resultImg from "../assets/result_preview.png";
 export default function MainPage() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     const loginStatus = sessionStorage.getItem("isLoggedIn");
@@ -23,9 +24,23 @@ export default function MainPage() {
     navigate("/auth/main");
   };
 
+  // ✅ 바깥 클릭 시 자동 닫기
+  useEffect(() => {
+    if (!showMenu) return;
+    const handleClickOutside = (e) => {
+      const menu = document.querySelector(".menu-wrapper");
+      const button = document.querySelector(".main-start-btn");
+      if (menu && !menu.contains(e.target) && !button.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [showMenu]);
+
   return (
     <div className="scroll-wrapper">
-      {/* ===== 섹션 1: Hero ===== */}
+      {/* ===== Hero Section ===== */}
       <section className="page-section hero-section">
         <header className="navbar">
           <div className="nav-left">
@@ -44,8 +59,8 @@ export default function MainPage() {
               <li className="dropdown">
                 데이터 평가
                 <ul className="dropdown-menu">
-                  <li onClick={() => navigate("/users/domain")}>도메인 선택</li>
-                  <li onClick={() => navigate("/users/dupload")}>문서 업로드</li>
+                  <li onClick={() => navigate("/users/domain")}>모델 평가</li>
+                  <li onClick={() => navigate("/users/domain2")}>자동화</li>
                 </ul>
               </li>
               <li>포트폴리오</li>
@@ -55,8 +70,11 @@ export default function MainPage() {
           </nav>
         </header>
 
-        <main className="main-centered fade-in">
-          <div className="main-text-box">
+        {/* 중앙 콘텐츠 */}
+        <main className="main-centered">
+          <div
+            className={`main-text-box ${showMenu ? "slide-out" : "slide-in"}`}
+          >
             <h1>
               Reliable AI Starts
               <br />
@@ -64,16 +82,33 @@ export default function MainPage() {
             </h1>
             <p>정확하고 검증된 LLM 평가 및 검수 솔루션</p>
             <button
-              onClick={() => navigate("/users/domain")}
+              onClick={() => setShowMenu(true)}
               className="main-start-btn"
             >
               LLM 모델 평가하기
             </button>
           </div>
+
+          {/* 오른쪽 2개 박스 */}
+          <div className={`menu-wrapper ${showMenu ? "show" : "hide"}`}>
+            {/* 모델 평가 박스 */}
+            <div className="data-menu-box model-box" onClick={() => navigate("/users/domain")}>
+              <h2>모델 평가 시작하기</h2>
+              <p>도메인을 선택하고 모델을 등록하세요.</p>
+                
+            </div>
+
+            {/* 자동화 박스 */}
+            <div className="data-menu-box auto-box" onClick={() => navigate("/users/domain2")}>
+              <h2>자동화 서비스 시작하기</h2>
+              <p>문서 업로드부터 평가까지 자동 처리됩니다.</p>
+           
+            </div>
+          </div>
         </main>
       </section>
 
-      {/* ===== 섹션 2: 서비스 단계 안내 ===== */}
+      {/* ===== 서비스 안내 ===== */}
       <section className="page-section service-section fade-in">
         <p className="flow-subtitle">
           문서를 업로드하고, 자동으로 생성된 질문을 통해 모델을 평가합니다.

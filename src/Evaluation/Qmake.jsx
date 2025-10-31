@@ -14,6 +14,7 @@ export default function Qmake() {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  // ✅ 문서 ID 결정 우선순위: (1) URL ?documentId → (2) 내 최신 질문 documentId → (3) 최신 업로드 문서
   useEffect(() => {
     const resolveDocumentId = async () => {
       try {
@@ -27,22 +28,16 @@ export default function Qmake() {
 
         // (2) 내 최신 질문 묶음의 documentId
         try {
-          const mine = await axios.get("/api/questions/mine", {
-            withCredentials: true,
-          });
+          const mine = await axios.get("/api/questions/mine", { withCredentials: true });
           const latestQ = Array.isArray(mine.data) ? mine.data[0] : null; // DESC 가정
           if (latestQ?.documentId) {
             setDocumentId(latestQ.documentId);
             return;
           }
-        } catch (_) {
-          /* fallback 진행 */
-        }
+        } catch (_) { /* fallback 진행 */ }
 
         // (3) 최신 업로드 문서
-        const res = await axios.get("/api/documents/latest", {
-          withCredentials: true,
-        });
+        const res = await axios.get("/api/documents/latest", { withCredentials: true });
         setDocumentId(res?.data?.documentId ?? res?.data?.id);
       } catch (e) {
         console.error("문서 ID 결정 실패:", e);
@@ -85,13 +80,7 @@ export default function Qmake() {
     <div className="qmake-container">
       {/* ---- 사이드바 ---- */}
       <aside className="qmake-sidebar">
-        <h2
-          className="qmake-sidebar-title"
-          onClick={handleLogoClick}
-          style={{ cursor: "pointer" }}
-        >
-          DEEP DATA
-        </h2>
+        <h2 className="qmake-sidebar-title" onClick={handleLogoClick} style={{ cursor: "pointer" }}>DEEP DATA</h2>
 
         <div className="step-wrapper">
           {[
@@ -104,9 +93,8 @@ export default function Qmake() {
           ].map((label, index) => (
             <div key={index} className="step-item">
               <div
-                className={`step-circle ${
-                  index === 2 ? "active" : index < 2 ? "completed" : ""
-                }`}
+                className={`step-circle ${index === 2 ? "active" : index < 2 ? "completed" : ""
+                  }`}
               >
                 {index + 1}
               </div>
@@ -158,23 +146,24 @@ export default function Qmake() {
 
         {/* 질문 박스 */}
         <div className="qmake-q-box">
-          {!loading && !error && questions.length > 0
-            ? questions.slice(0, 5).map((text, i) => (
-                <div key={i} className="q-item">
-                  <span className="q-number">Q{i + 1}.</span>
-                  <span className="q-text">{String(text ?? "")}</span>
-                </div>
-              ))
-            : !loading && !error && <p>질문 데이터가 없습니다.</p>}
+          {!loading && !error && questions.length > 0 ? (
+            questions.slice(0, 5).map((text, i) => (
+              <div key={i} className="q-item">
+                <span className="q-number">Q{i + 1}.</span>
+                <span className="q-text">{String(text ?? "")}</span>
+              </div>
+            ))
+          ) : (
+            !loading &&
+            !error && <p>질문 데이터가 없습니다.</p>
+          )}
         </div>
 
         {/* 카드 영역 */}
         <div className="qmake-card-wrapper">
           <div className="qmake-card">
             <h3>직접 답변 입력하기</h3>
-            <p>
-              생성된 Q를 다운로드하여 직접 모델을 돌린 후 제출할 수 있습니다.
-            </p>
+            <p>생성된 Q를 다운로드하여 직접 모델을 돌린 후 제출할 수 있습니다.</p>
             <button
               className="run-btn"
               onClick={() =>
@@ -194,9 +183,7 @@ export default function Qmake() {
 
           <div className="qmake-card">
             <h3>내 모델 등록하기</h3>
-            <p>
-              사용자 모델을 등록하면 자동으로 답변이 생성되고 평가가 진행됩니다.
-            </p>
+            <p>사용자 모델을 등록하면 자동으로 답변이 생성되고 평가가 진행됩니다.</p>
             <button
               className="run-btn"
               onClick={() => navigate("/users/modelUpload")}

@@ -280,8 +280,7 @@ body {
 /* ========================== */
 .qmake-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.45);
@@ -289,14 +288,64 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.25s ease-out;
 }
 
 .qmake-modal-content {
-  background: rgba(255, 255, 255, 0.9);
+  background: #fff;
   width: 700px;
   max-height: 80vh;
   border-radius: 20px;
-  padding: 30px 40px;
+  padding: 32px 40px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
   overflow-y: auto;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.25s ease-out;
 }
+
+/* ========================== */
+/* 모달 안 질문 스타일 개선 */
+/* ========================== */
+.qmake-modal-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* 메인 질문과 동일한 카드 스타일 적용 */
+.modal-q-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  line-height: 1.4;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  transition: 0.25s ease;
+}
+
+.modal-q-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* 번호 스타일 */
+.modal-q-item .q-number {
+  color: #4a6cf7;
+  font-weight: 700;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+/* 텍스트 스타일 */
+.modal-q-item .q-text {
+  color: #0c1c3f;
+  word-break: keep-all;
+  flex: 1;
+}
+.qmake-modal-close{
+  margin-top:25px;
+}
+

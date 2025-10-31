@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap");
 
 * {
   margin: 0;
@@ -7,9 +7,7 @@
   font-family: "Pretendard", sans-serif;
 }
 
-/* ============================= */
-/* 기본 레이아웃 (풀페이지 스크롤) */
-/* ============================= */
+/* ===== 기본 레이아웃 ===== */
 html,
 body {
   height: 100%;
@@ -17,15 +15,14 @@ body {
   background: #f7faff;
 }
 
-.main-container {
+.scroll-wrapper {
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
-/* ===== 섹션 공통 ===== */
-section {
+.page-section {
   height: 100vh;
   width: 100%;
   scroll-snap-align: start;
@@ -33,13 +30,10 @@ section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: all 1s ease;
   position: relative;
 }
 
-/* ============================= */
-/* 상단 네비게이션 */
-/* ============================= */
+/* ===== 상단 네비게이션 ===== */
 .navbar {
   width: 100%;
   height: 75px;
@@ -53,10 +47,9 @@ section {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 20;
 }
 
-/* 로고 */
 .site-logo {
   width: 100px;
   cursor: pointer;
@@ -66,7 +59,6 @@ section {
   transform: scale(1.05);
 }
 
-/* 메뉴 */
 .nav-menu ul {
   list-style: none;
   display: flex;
@@ -79,13 +71,12 @@ section {
   color: #3c3c3c;
   cursor: pointer;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 .nav-menu li:hover {
   color: #4a90e2;
 }
 
-/* 드롭다운 */
 .dropdown {
   position: relative;
 }
@@ -95,13 +86,11 @@ section {
   left: 0;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  list-style: none;
+  border-radius: 8px;
   padding: 8px 0;
-  margin: 0;
-  display: none !important;
   min-width: 160px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: none !important;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
   z-index: 1000;
 }
 .dropdown:hover .dropdown-menu {
@@ -109,50 +98,59 @@ section {
 }
 .dropdown-menu li {
   padding: 10px 16px;
-  color: #333;
   white-space: nowrap;
-  transition: background 0.2s;
 }
 .dropdown-menu li:hover {
-  background-color: #f3f5ff;
+  background: #f3f5ff;
   color: #132d64;
-  font-weight: 500;
 }
 
-/* ============================= */
-/* 섹션 1: Hero Section */
-/* ============================= */
-.main-centered {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding-top: 75px;
-  background: linear-gradient(180deg, #f7faff 0%, #eaf1ff 100%);
-}
-
+/* ===== 섹션 1: Hero ===== */
 .hero-section {
   background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 85%);
 }
 
-.main-text-box {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 24px;
-  padding: 80px 100px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+/* 중앙 컨테이너 */
+.main-centered {
+  width: 100%;
+  height: calc(100vh - 75px);
+  margin-top: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.main-text-box:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 25px 80px rgba(74, 144, 226, 0.25);
+/* 메인 텍스트 박스 */
+.main-text-box {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  padding: 80px 120px;
+  box-shadow: 0 10px 40px rgba(74, 108, 247, 0.15);
+  backdrop-filter: blur(8px);
+  transition: all 0.7s ease;
+  text-align: center;
+  width: 500px;
+  max-width: 1100px;
+  min-width: 800px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.main-text-box.slide-out {
+  transform: translate(-80%, -50%);
+  opacity: 0.7;
+}
+.main-text-box.slide-in {
+  transform: translate(-50%, -50%);
+  opacity: 1;
 }
 
 .main-text-box h1 {
-  font-size: 56px;
+  font-size: 60px;
   font-weight: 800;
   color: #0c1c3f;
   margin-bottom: 20px;
@@ -167,7 +165,7 @@ section {
 
 .main-start-btn {
   padding: 16px 42px;
-  background: linear-gradient(135deg, #4a90e2, #74b9ff);
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
   color: #fff;
   font-weight: 700;
   font-size: 17px;
@@ -183,187 +181,232 @@ section {
   box-shadow: 0 8px 30px rgba(74, 144, 226, 0.45);
 }
 
-/* ============================= */
-/* 섹션 2: 서비스 안내 Section (리디자인) */
-/* ============================= */
-.service-flow {
+/* ===== 오른쪽 두 개 메뉴 박스 ===== */
+.menu-wrapper {
+  position: absolute;
+  right: -80%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+.menu-wrapper.show {
+  right: 10%;
+  opacity: 1;
+}
+.menu-wrapper.hide {
+  right: -60%;
+  opacity: 0;
+}
+
+/* 공통 박스 스타일 */
+.data-menu-box {
+  width: 320px;
+  border-radius: 24px;
+  padding: 32px 36px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(74, 108, 247, 0.3);
+  color: #fff;
+  border: none;
+  background: linear-gradient(135deg, #4a6cf7, #7d9aff);
+
+}
+.data-menu-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(74, 108, 247, 0.45);
+}
+
+
+.data-menu-box h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.data-menu-box p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 22px;
+}
+
+/* 버튼 */
+.data-menu-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.data-btn {
+  padding: 10px 22px;
+  border-radius: 28px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  color: #4a6cf7;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+.data-btn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  color: #3b5ce0;
+  transform: translateY(-2px);
+}
+
+/* ===== 섹션 2: 서비스 안내 ===== */
+.service-section {
   background: radial-gradient(circle at 50% 30%, #f3f7ff 0%, #e6eeff 80%);
   text-align: center;
-  padding-top: 140px;
-  padding-bottom: 120px;
-  animation: fadeIn 1.2s ease-in-out both;
+  padding: 140px 24px 120px;
   position: relative;
   overflow: hidden;
 }
 
-/* 제목 */
 .flow-subtitle {
   font-size: 22px;
   color: #4a90e2;
-  margin-bottom: 80px;
-  letter-spacing: -0.01em;
-  position: relative;
+  margin-bottom: 64px;
 }
 .flow-subtitle::after {
   content: "";
   display: block;
   width: 90px;
   height: 3px;
+  margin: 16px auto 0;
   background: linear-gradient(90deg, #4a6cf7, #7d9aff);
   border-radius: 2px;
-  margin: 18px auto 0;
 }
 
-/* 카드 컨테이너 */
 .flow-cards {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 60px;
+  gap: 40px;
   flex-wrap: wrap;
-  margin-bottom: 80px;
-  padding: 0 80px;
+  margin-bottom: 64px;
+  padding: 0 24px;
 }
 
-/* 카드 디자인 */
 .flow-card {
-  width: 380px;
-  background: rgba(255, 255, 255, 0.7);
+  width: 360px;
+  background: rgba(255, 255, 255, 0.75);
   border: 1px solid rgba(180, 200, 255, 0.3);
-  border-radius: 24px;
-  padding: 32px;
+  border-radius: 20px;
+  padding: 28px;
   box-shadow: 0 10px 35px rgba(74, 108, 247, 0.12);
-  backdrop-filter: blur(15px);
-  transition: all 0.4s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transform: translateY(40px);
+  backdrop-filter: blur(12px);
+  transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+  transform: translateY(30px);
   opacity: 0;
-  animation: cardFadeUp 1.3s ease-in-out forwards;
+  animation: cardFadeUp 1s ease 0.1s forwards;
+}
+.flow-card:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.flow-card:nth-child(3) {
+  animation-delay: 0.6s;
 }
 
-/* 카드 순차 등장 */
-.flow-card:nth-child(2) { animation-delay: 0.3s; }
-.flow-card:nth-child(3) { animation-delay: 0.6s; }
-
-/* 카드 hover 효과 */
 .flow-card:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 25px 60px rgba(74, 108, 247, 0.25);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 24px 60px rgba(74, 108, 247, 0.22);
   border-color: rgba(74, 108, 247, 0.35);
 }
 
-/* 카드 내부 glow */
-.flow-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.08), rgba(125, 154, 255, 0.08));
-  pointer-events: none;
-}
-
-/* 이미지 */
 .flow-card img {
   width: 100%;
   height: 220px;
-  border-radius: 16px;
-  object-fit: cover;
-  margin-bottom: 20px;
-  transition: transform 0.4s ease;
+  object-fit: contain;
+  background-color: #f9fbff;
+  border-radius: 14px;
+  padding: 8px;
+  transition: transform 0.35s;
+  display: block;
+  margin: 0 auto 16px;
 }
 .flow-card:hover img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
-/* 카드 텍스트 */
 .flow-card h3 {
-  font-size: 22px;
+  font-size: 20px;
   color: #132d64;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-weight: 700;
+  min-height: 28px;
 }
 .flow-card p {
-  font-size: 16px;
+  font-size: 15px;
   color: #555;
-  line-height: 1.6;
+  line-height: 1.55;
+  min-height: 50px;
 }
 
-/* 버튼 */
 .flow-cta-btn {
-  padding: 18px 50px;
-  font-size: 18px;
+  padding: 16px 42px;
+  font-size: 17px;
   font-weight: 700;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 50px;
+  border-radius: 40px;
   background: linear-gradient(135deg, #4a6cf7, #7d9aff);
   cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 6px 25px rgba(74, 108, 247, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-.flow-cta-btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -80%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.5), transparent);
-  transform: skewX(-25deg);
-  transition: 0.6s;
-}
-.flow-cta-btn:hover::after {
-  left: 130%;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 8px 28px rgba(74, 108, 247, 0.3);
 }
 .flow-cta-btn:hover {
   background: linear-gradient(135deg, #3652d9, #6d8aff);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(74, 108, 247, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 42px rgba(74, 108, 247, 0.42);
 }
 
-/* ============================= */
-/* 애니메이션 효과 */
-/* ============================= */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* ===== 애니메이션 ===== */
 @keyframes cardFadeUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ============================= */
-/* 반응형 */
-/* ============================= */
+/* ===== 반응형 ===== */
 @media (max-width: 1024px) {
   .main-text-box {
-    padding: 60px 60px;
+    width: 85vw;
+    min-width: auto;
+    padding: 60px 40px;
   }
   .main-text-box h1 {
-    font-size: 46px;
+    font-size: 42px;
   }
-  .flow-cards {
-    gap: 30px;
+  .menu-wrapper {
+    right: 5%;
+    flex-direction: row;
+    gap: 20px;
+  }
+  .data-menu-box {
+    width: 250px;
+    padding: 24px 28px;
   }
 }
 
 @media (max-width: 768px) {
-  .main-text-box {
-    padding: 50px 30px;
-  }
-  .main-text-box h1 {
-    font-size: 36px;
+  .nav-menu ul {
+    gap: 28px;
   }
   .flow-card {
-    width: 85%;
+    width: 88%;
   }
-  .main-start-btn,
-  .flow-cta-btn {
-    width: 100%;
+  .flow-subtitle {
+    font-size: 20px;
   }
 }

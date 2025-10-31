@@ -119,5 +119,6 @@ export async function fetchFlatAnswersByDoc(documentId) {
     params: { documentId },
     withCredentials: true,
   });
-  return res.data; // ["답변1","답변2",...]
+  
+  return res.data; // ["답변1","답변2",…]
 }
