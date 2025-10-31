@@ -22,6 +22,7 @@ export default function MainPage2() {
     setIsLoggedIn(false);
     navigate("/auth/main");
   };
+
   return (
     <div className="main-container">
       {/* ===== 상단 네비게이션 ===== */}
@@ -37,17 +38,22 @@ export default function MainPage2() {
 
         <nav className="nav-menu">
           <ul>
-            <li>서비스 이용</li>
-            <li>COMPANY</li>
+            <li onClick={() => navigate("/users/service")}>서비스 이용</li>
+            <li onClick={() => navigate("/users/company")}>COMPANY</li>
             <li className="dropdown">
               데이터 평가
               <ul className="dropdown-menu">
                 <li onClick={() => navigate("/users/domain")}>도메인 선택</li>
-                <li onClick={() => navigate("/users/domain2")}>문서 업로드</li>
+                <li onClick={() => navigate("/users/docupload")}>문서 업로드</li>
               </ul>
             </li>
-            <li>포트폴리오</li>
-            <li>커뮤니티</li>
+            <li onClick={() => navigate("/users/portfolio")}>포트폴리오</li>
+            <li onClick={() => navigate("/users/community")}>커뮤니티</li>
+            {isLoggedIn ? (
+              <li onClick={handleLogout}>로그아웃</li>
+            ) : (
+              <li onClick={() => navigate("/auth/login")}>로그인</li>
+            )}
             <li onClick={() => navigate("/users/mypage")}>마이페이지</li>
           </ul>
         </nav>
@@ -71,28 +77,30 @@ export default function MainPage2() {
           </button>
         </div>
 
-        {/* 오른쪽에서 슬라이드 인되는 패널 */}
-        <div className={`data-menu-box ${showMenu ? "show" : "hide"}`}>
-          <h2>데이터 평가 시작하기</h2>
-          <p>평가할 방식을 선택하세요.</p>
-          <div className="data-menu-buttons">
-            <button
-              className="data-btn"
-              onClick={() => navigate("/users/domain")}
-            >
-              서비스 1
-            </button>
-            <button
-              className="data-btn"
-              onClick={() => navigate("/users/domain2")}
-            >
-              서비스 2
+        {/* ✅ showMenu가 true일 때만 표시되도록 수정 */}
+        {showMenu && (
+          <div className="data-menu-box show">
+            <h2>데이터 평가 시작하기</h2>
+            <p>평가할 방식을 선택하세요.</p>
+            <div className="data-menu-buttons">
+              <button
+                className="data-btn"
+                onClick={() => navigate("/users/domain")}
+              >
+                서비스 1
+              </button>
+              <button
+                className="data-btn"
+                onClick={() => navigate("/users/docupload")}
+              >
+                서비스 2
+              </button>
+            </div>
+            <button className="back-btn" onClick={() => setShowMenu(false)}>
+              ← 돌아가기
             </button>
           </div>
-          <button className="back-btn" onClick={() => setShowMenu(false)}>
-            ← 돌아가기
-          </button>
-        </div>
+        )}
       </main>
     </div>
   );
