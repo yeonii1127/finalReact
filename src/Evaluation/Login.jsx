@@ -110,14 +110,12 @@ export default function Login() {
             <li className="dropdown">
               데이터 평가
               <ul className="dropdown-menu">
-                <li>도메인 선택</li>
-                <li>문서 업로드</li>
+                <li>모델 평가</li>
+                <li>자동화</li>
               </ul>
             </li>
             <li>포트폴리오</li>
-            <li className="aidic-link" onClick={() => navigate("/auth/aidic")}>
-              커뮤니티
-            </li>
+            <li>커뮤니티</li>
             <li className="login-link" onClick={() => navigate("/auth/login")}>
               로그인 / 회원가입
             </li>

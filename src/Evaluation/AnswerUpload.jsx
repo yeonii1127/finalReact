@@ -148,6 +148,7 @@ export default function AnswerUpload() {
       evalModel: selectedModel,
     };
     try {
+      console.log("[React→FastAPI] submit-answer payload =", payload);
       tlog("CALL /worker/submit-answer payload=", payload);
       const { data } = await axios.post(
         "/worker/submit-answer",
@@ -159,7 +160,12 @@ export default function AnswerUpload() {
       // FastAPI는 { ok:boolean, step?:string, spring?:{status,text}, message?:string } 형태를 기대
       if (data?.ok || data?.success) {
         alert(data?.message || "평가 요청이 접수되었습니다.");
-        navigate("/users/result");
+        const scoreId = data?.scoreId || data?.spring?.json?.scoreId || data?.spring?.scoreId;
+        if (scoreId) {
+          navigate("/users/result", { state: { scoreId } });
+        } else {
+          navigate("/users/result");
+        }
       } else {
         const step = data?.step || "unknown";
         const s = data?.spring?.status ?? "-";

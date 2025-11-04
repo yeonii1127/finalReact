@@ -23,6 +23,19 @@ export default function MainPage2() {
     navigate("/auth/main");
   };
 
+   // ✅ 바깥 클릭 시 자동 닫기
+    useEffect(() => {
+      if (!showMenu) return;
+      const handleClickOutside = (e) => {
+        const menu = document.querySelector(".menu-wrapper");
+        const button = document.querySelector(".main-start-btn");
+        if (menu && !menu.contains(e.target) && !button.contains(e.target)) {
+          setShowMenu(false);
+        }
+      };
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
+    }, [showMenu]);
   return (
     <div className="main-container">
       {/* ===== 상단 네비게이션 ===== */}
@@ -32,23 +45,23 @@ export default function MainPage2() {
             src={logo}
             alt="로고"
             className="site-logo"
-            onClick={() => navigate("/auth/main")}
+            onClick={() => navigate("/users/main2")}
           />
         </div>
 
         <nav className="nav-menu">
           <ul>
-            <li onClick={() => navigate("/users/service")}>서비스 이용</li>
-            <li onClick={() => navigate("/users/company")}>COMPANY</li>
+            <li >서비스 이용</li>
+            <li >COMPANY</li>
             <li className="dropdown">
               데이터 평가
               <ul className="dropdown-menu">
-                <li onClick={() => navigate("/users/domain")}>도메인 선택</li>
-                <li onClick={() => navigate("/users/docupload")}>문서 업로드</li>
+                <li onClick={() => navigate("/users/domain")}>모델 평가</li>
+                <li onClick={() => navigate("/users/domain2")}>자동화</li>
               </ul>
             </li>
-            <li onClick={() => navigate("/users/portfolio")}>포트폴리오</li>
-            <li onClick={() => navigate("/users/community")}>커뮤니티</li>
+            <li >포트폴리오</li>
+            <li >커뮤니티</li>
             {isLoggedIn ? (
               <li onClick={handleLogout}>로그아웃</li>
             ) : (
@@ -78,29 +91,21 @@ export default function MainPage2() {
         </div>
 
         {/* ✅ showMenu가 true일 때만 표시되도록 수정 */}
-        {showMenu && (
-          <div className="data-menu-box show">
-            <h2>데이터 평가 시작하기</h2>
-            <p>평가할 방식을 선택하세요.</p>
-            <div className="data-menu-buttons">
-              <button
-                className="data-btn"
-                onClick={() => navigate("/users/domain")}
-              >
-                서비스 1
-              </button>
-              <button
-                className="data-btn"
-                onClick={() => navigate("/users/docupload")}
-              >
-                서비스 2
-              </button>
+      <div className={`menu-wrapper ${showMenu ? "show" : "hide"}`}>
+            {/* 모델 평가 박스 */}
+            <div className="data-menu-box model-box" onClick={() => navigate("/users/domain")}>
+              <h2>모델 평가 시작하기</h2>
+              <p>도메인을 선택하고 모델을 등록하세요.</p>
+                
             </div>
-            <button className="back-btn" onClick={() => setShowMenu(false)}>
-              ← 돌아가기
-            </button>
+
+            {/* 자동화 박스 */}
+            <div className="data-menu-box auto-box" onClick={() => navigate("/users/domain2")}>
+              <h2>자동화 서비스 시작하기</h2>
+              <p>문서 업로드부터 평가까지 자동 처리됩니다.</p>
+           
+            </div>
           </div>
-        )}
       </main>
     </div>
   );
