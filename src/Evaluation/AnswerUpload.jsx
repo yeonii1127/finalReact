@@ -157,13 +157,36 @@ export default function AnswerUpload() {
       );
       tlog("RESP /worker/submit-answer", data);
 
-      // FastAPI는 { ok:boolean, step?:string, spring?:{status,text}, message?:string } 형태를 기대
       if (data?.ok || data?.success) {
-        alert(data?.message || "평가 요청이 접수되었습니다.");
-        const scoreId = data?.scoreId || data?.spring?.json?.scoreId || data?.spring?.scoreId;
+        // ✅ scoreId 안전 추출기
+        const extractScoreId = (d) => {
+          if (!d) return null;
+          // 1) 최상단
+          let sid = d.scoreId;
+          // 2) spring.json / spring.scoreId
+          if (!sid) sid = d?.spring?.json?.scoreId || d?.spring?.scoreId;
+          // 3) spring.body나 spring.text가 JSON 문자열인 경우
+          if (!sid) {
+            const bodyStr = d?.spring?.body || d?.spring?.text;
+            if (typeof bodyStr === "string") {
+              try {
+                const obj = JSON.parse(bodyStr);
+                sid = obj?.scoreId || sid;
+              } catch (_) {}
+            }
+          }
+          // 4) data.scoreId 같은 중첩 (호환성)
+          if (!sid) sid = d?.data?.scoreId || d?.result?.scoreId;
+          return sid ?? null;
+        };
+      
+        const scoreId = extractScoreId(data);
+        tlog("RESOLVED scoreId =", scoreId, "raw=", data);
+      
         if (scoreId) {
           navigate("/users/result", { state: { scoreId } });
         } else {
+          alert("scoreId를 응답에서 찾지 못했습니다. 네트워크 탭에서 /worker/submit-answer 응답을 확인해주세요.");
           navigate("/users/result");
         }
       } else {
