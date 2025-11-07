@@ -214,8 +214,7 @@ export default function AnswerUpload() {
             "도메인 설정",
             "파일 등록",
             "질문 생성",
-            "평가 실행",
-            "평가 진행 현황",
+            "답변 등록",
             "결과",
           ].map((label, index) => (
             <div key={index} className="step-item">

@@ -141,33 +141,32 @@ export default function Result() {
         </h2>
 
         <div className="rnew-step-wrapper">
-          {[
-            "도메인 설정",
-            "파일 등록",
-            "질문 생성",
-            "답변 등록 / 모델 등록",
-            "평가 진행 현황",
-            "결과",
-          ].map((label, index) => (
-            <div key={index} className="rnew-step-item">
-              <div
-                className={`rnew-step-circle ${
-                  index === 5 ? "active" : index < 5 ? "completed" : ""
-                }`}
-              >
-                {index + 1}
+          {(() => {
+            const steps = ["도메인 설정", "파일 등록", "질문 생성", "답변 등록", "결과"];
+            const last = steps.length - 1;
+            return steps.map((label, index) => (
+              <div key={index} className="rnew-step-item">
+                <div
+                  className={`rnew-step-circle ${
+                    index === last ? "active" : "completed"
+                  }`}
+                >
+                  {index + 1}
+                </div>
+                <div className="rnew-step-label">{label}</div>
+                {index < last && <div className="rnew-step-line"></div>}
               </div>
-              <div className="rnew-step-label">{label}</div>
-              {index < 5 && <div className="rnew-step-line"></div>}
-            </div>
-          ))}
+            ));
+          })()}
         </div>
       </aside>
 
       {/* ===== 메인 영역 ===== */}
       <main className="rnew-main">
-        <h1 className="rnew-title">평가 결과</h1>
-        <p className="rnew-subtitle">모델의 평가 지표 결과입니다.</p>
+        <div className="rnew-head">
+          <h1 className="rnew-title">평가 결과</h1>
+          <p className="rnew-subtitle">모델의 평가 지표 결과입니다.</p>
+        </div>
 
         {/* === 상단 카드 === */}
         <div className="rnew-card-wrapper">
@@ -197,11 +196,9 @@ export default function Result() {
         </div>
 
         {/* === 종합 피드백 === */}
-        <div className="rnew-feedback-wrapper">
-          <div className="rnew-feedback">
-            <h3>종합 피드백</h3>
-            <p>{result.feedback}</p>
-          </div>
+        <div className="rnew-feedback">
+          <h3>종합 피드백</h3>
+          <p>{result.feedback}</p>
         </div>
 
         {/* === 결과 표 === */}
